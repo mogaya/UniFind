@@ -1,0 +1,74 @@
+!! Laravel (Backend)
+
+- `php artisan serve`               : Run the Laravel backend server ([http://127.0.0.1:8000](http://127.0.0.1:8000)).
+- `php artisan migrate`             : Run all database migrations.                                                    
+- `php artisan migrate:fresh --seed`: Reset database and seed with test data.                                         
+- `php artisan db:seed`             : Run database seeders.                                                           
+- `php artisan make:model Post -mcr`: Create a model + migration + controller + resource.
+
+- `php artisan make:controller UserController`    - Create a controller.
+       
+- `php artisan make:migration create_posts_table` - Create a migration.                                                             
+- `php artisan tinker`              : Run REPL to interact with your app’s models.                                    
+- `php artisan route:list`          : Show all registered routes.                                                     
+- `php artisan optimize:clear`      : Clear cache (config, route, view, etc).                                         
+- `php artisan storage:link`        : Link `storage/app/public` → `public/storage`.                                   
+- `php artisan make:request StorePostRequest`     - Generate a form request validator.                                              
+
+---
+
+## 🔹 NPM / Frontend (React + Inertia)
+
+- Command            - Purpose                                       
+- ------------------ - ----------------------------------------------
+- `npm install`      - Install dependencies.                         
+- `npm run dev`      - Start Vite dev server (hot reloading).        
+- `npm run build`    - Build assets for production.                  
+- `npm run preview`  - Preview production build locally.             
+- `npx tsc --noEmit` - Check TypeScript types without emitting files.
+- `npm run lint`     - Run ESLint (if configured).                   
+- `npm run format`   - Format code with Prettier (if configured).    
+
+---
+
+## 🔹 Inertia / Project-Specific
+
+- Command                                    : Purpose                                                     
+- -------------------------------------------------------- - ------------------------------------------------------------
+- `php artisan make:controller PostController --invokable` - Create a controller for a single Inertia page.              
+- `php artisan inertia:middleware`           : (If needed) publish Inertia middleware again.               
+- `php artisan make:component ExampleComponent`            - Create a Laravel Blade/React component (depending on usage).
+- `npm run dev`                              : See your React/Inertia changes instantly.                   
+
+---
+
+## 🔹 Git / Workflow
+
+- Command                         : Purpose                     
+- --------------------------------------------- - ----------------------------
+- `git init`                      : Initialize git repo.        
+- `git add . && git commit -m "Initial commit"` - Save code changes.          
+- `git checkout -b feature/awesome`             - Create a new feature branch.
+- `git pull origin main`          : Update local repo.          
+- `git push origin feature/awesome`             - Push feature branch.        
+
+---
+
+⚡️ Pro-tip:
+You’ll probably be switching **a lot** between backend & frontend.
+So typically you’ll keep **two terminals open**:
+
+* **Terminal 1:**
+
+  ```bash
+  php artisan serve
+  ```
+* **Terminal 2:**
+
+  ```bash
+  npm run dev
+  ```
+
+---
+
+👉 Do you want me to also prepare **custom Inertia workflow commands** (like generating a new React page + linking it to a route in one go) so you don’t forget the steps?

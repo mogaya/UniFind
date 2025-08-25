@@ -1,0 +1,85 @@
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu';
+import { SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { PropsWithChildren } from 'react';
+
+export default function Layout({ children }: PropsWithChildren) {
+    const { auth } = usePage<SharedData>().props;
+
+    const navLinks = [
+        { href: '/', label: 'Home' },
+        { href: '/report-lost', label: 'Report Lost' },
+        { href: '/report-found', label: 'Report Found' },
+        { href: '/found-items', label: 'Found Items' },
+        { href: '/my-reports', label: 'My Reports' },
+    ];
+
+    const currentLabel = navLinks.find((link) => link.href === window.location.pathname)?.label || 'UniFind';
+
+    return (
+        <>
+            <Head title={currentLabel}>
+                <link rel="preconnect" href="https://fonts.bunny.net" />
+                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+            </Head>
+
+            <div className="flex min-h-screen flex-col">
+                {/* Navbar */}
+
+                <header className="border-b p-4">
+                    <div className="container mx-auto flex items-center justify-between p-4">
+                        <h1 className="text-2xl font-bold">UniFind</h1>
+
+                        <NavigationMenu>
+                            <NavigationMenuList>
+                                <div className="flex w-full flex-row justify-between gap-12">
+                                    <div className="flex flex-row gap-2">
+                                        {navLinks.map((link) => (
+                                            <NavigationMenuItem key={link.href}>
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        href={link.href}
+                                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                                                            window.location.pathname === link.href
+                                                                ? 'bg-primary text-primary-foreground'
+                                                                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                                                        }`}
+                                                    >
+                                                        {link.label}
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </NavigationMenuItem>
+                                        ))}
+                                    </div>
+                                    <div>
+                                        {auth.user ? (
+                                            <Link
+                                                href={route('dashboard')}
+                                                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                            >
+                                                Dashboard
+                                            </Link>
+                                        ) : (
+                                            <>
+                                                <Link
+                                                    href={route('login')}
+                                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                                >
+                                                    Log in
+                                                </Link>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            </NavigationMenuList>
+                        </NavigationMenu>
+                    </div>
+                </header>
+                <main>{children}</main>
+                <footer>
+                    <p>&copy; 2025 UniFind</p>
+                </footer>
+            </div>
+        </>
+    );
+}
