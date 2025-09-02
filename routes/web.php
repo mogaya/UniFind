@@ -9,7 +9,7 @@ use Inertia\Inertia;
     // "/my-reports"
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('welcome/welcome');
 })->name('home');
 
 Route::get('/report-lost', function () {
