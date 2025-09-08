@@ -76,7 +76,7 @@ export default function Layout({ children }: PropsWithChildren) {
                     </div>
                 </header>
                 <main>{children}</main>
-                <footer>
+                <footer className="mt-6 flex justify-center p-6">
                     <p>&copy; 2025 UniFind</p>
                 </footer>
             </div>

@@ -13,20 +13,20 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/report-lost', function () {
-    return Inertia::render('ReportLost');
-})->name('ReportLost');
+    return Inertia::render('report-lost');
+})->name('report-lost');
 
 Route::get('report-found', function () {
-    return Inertia::render('ReportFound');
-})->name('ReportFound');
+    return Inertia::render('report-found');
+})->name('report-found');
 
 Route::get('/found-items', function () {
-    return Inertia::render('FoundItems');
-})->name('FoundItems');
+    return Inertia::render('found-items');
+})->name('found-items');
 
 Route::get('my-reports', function () {
-    return Inertia::render('MyReports');
-})->name('MyReports');
+    return Inertia::render('my-reports');
+})->name('my-reports');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

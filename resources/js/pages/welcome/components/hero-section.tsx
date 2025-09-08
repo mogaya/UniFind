@@ -7,7 +7,7 @@ import hero4 from '../assets/hero4.jpeg';
 
 const sliderImages = [hero1, hero2, hero3, hero4];
 
-const Hero = () => {
+const HeroSection = () => {
     const settings = {
         infinite: true,
         speed: 1000,
@@ -54,4 +54,4 @@ const Hero = () => {
     );
 };
 
-export default Hero;
+export default HeroSection;
