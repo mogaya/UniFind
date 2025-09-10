@@ -25,7 +25,7 @@ Route::get('/found-items', function () {
 })->name('found-items');
 
 Route::get('my-reports', function () {
-    return Inertia::render('my-reports');
+    return Inertia::render('my-reports/my-reports');
 })->name('my-reports');
 
 Route::middleware(['auth', 'verified'])->group(function () {
