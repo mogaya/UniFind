@@ -98,7 +98,7 @@ const MyReports = () => {
 
     const handleViewDetails = (id: string, type: string) => {
         // Navigate to item detail page
-        router.get(`/item/${id}`);
+        router.get(`/item-details/${id}`);
     };
 
     const handleEdit = (id: string, type: string) => {

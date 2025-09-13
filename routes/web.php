@@ -16,7 +16,7 @@ Route::get('/report-lost', function () {
     return Inertia::render('report-lost');
 })->name('report-lost');
 
-Route::get('report-found', function () {
+Route::get('/report-found', function () {
     return Inertia::render('report-found');
 })->name('report-found');
 
@@ -24,9 +24,13 @@ Route::get('/found-items', function () {
     return Inertia::render('found-items');
 })->name('found-items');
 
-Route::get('my-reports', function () {
+Route::get('/my-reports', function () {
     return Inertia::render('my-reports/my-reports');
 })->name('my-reports');
+
+Route::get('/item-details', function () {
+    return Inertia::render('item-details');
+})->name('item-details');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
