@@ -69,6 +69,4 @@ So typically you’ll keep **two terminals open**:
   npm run dev
   ```
 
----
 
-👉 Do you want me to also prepare **custom Inertia workflow commands** (like generating a new React page + linking it to a route in one go) so you don’t forget the steps?
