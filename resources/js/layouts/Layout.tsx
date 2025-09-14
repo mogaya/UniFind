@@ -11,7 +11,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
     const navLinks = [
         { href: '/', label: 'Home' },
-        { href: '/report-lost', label: 'Report Lost' },
+        { href: '/lost-items/create', label: 'Report Lost' },
         { href: '/report-found', label: 'Report Found' },
         { href: '/found-items', label: 'Found Items' },
         { href: '/my-reports', label: 'My Reports' },
