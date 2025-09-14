@@ -70,3 +70,17 @@ So typically you’ll keep **two terminals open**:
   ```
 
 
+!! OTHER
+php artisan make:model Category -m
+
+php artisan make:controller LostItemController --resource
+
+php artisan make:seeder CategorySeeder
+
+php artisan db:seed --class=CategorySeeder
+
+php artisan storage:link
+
+
+
+
