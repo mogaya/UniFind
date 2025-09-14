@@ -5,36 +5,52 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import Layout from '@/layouts/Layout';
+import { useForm, usePage } from '@inertiajs/react';
 import { Camera, Upload } from 'lucide-react';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
-const ReportLost = () => {
+
+
+
+const Create = () => {
+    const { data, setData, post, processing, errors } = useForm({
+        item_name: '',
+        category_id: '',
+        description: '',
+        last_seen_location: '',
+        date_lost: '',
+        contact_info: '',
+        photo: null as File | null,
+    });
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        post('/lost-items');
+        // console.log(data)
+    };
+
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            setSelectedImage(file);
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setImagePreview(e.target?.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
+        if (!file) return;
+
+        setData('photo', file);
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
     };
 
-    const categories = [
-        'Identity Cards(IDs)',
-        'Electronics',
-        'Bags',
-        'Clothing',
-        'Books & Stationery',
-        'Keys',
-        'Jewelry & Accessories',
-        'Sports Equipment',
-        'Other',
-    ];
+    type PageProps = {
+        categories: { id: number; category_name: string }[];
+    };
+
+    const { categories } = usePage<PageProps>().props;
 
     return (
         <Layout>
@@ -45,14 +61,20 @@ const ReportLost = () => {
                         <p className="text-muted-foreground">Provide as much detail as possible to help others identify your item.</p>
                     </CardHeader>
 
-                    <CardContent>
-                        <form action="" className="space-y-6">
+                    <form action="" className="space-y-6" onSubmit={handleSubmit}>
+                        <CardContent className="space-y-6">
                             {/* ItemName */}
                             <div className="space-y-2">
                                 <Label htmlFor="itemName" className="font-medium text-foreground">
                                     Item Name
                                 </Label>
-                                <Input id="itemName" placeholder="e.g., iPhone 14 Pro, Black Bag, etc." className="rounded-xl border-border"></Input>
+                                <Input
+                                    id="itemName"
+                                    placeholder="e.g., iPhone 14 Pro, Black Bag, etc."
+                                    value={data.item_name}
+                                    onChange={(e) => setData('item_name', e.target.value)}
+                                    className="rounded-xl border-border"
+                                ></Input>
                             </div>
 
                             {/* Category */}
@@ -60,14 +82,14 @@ const ReportLost = () => {
                                 <Label htmlFor="category" className="font-medium text-foreground">
                                     Category
                                 </Label>
-                                <Select>
+                                <Select onValueChange={(value) => setData('category_id', value)}>
                                     <SelectTrigger className="rounded-xl border-border">
                                         <SelectValue placeholder="Select a category" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((category) => (
-                                            <SelectItem key={category} value={category}>
-                                                {category}
+                                            <SelectItem key={category.id} value={String(category.id)}>
+                                                {category.category_name}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -82,6 +104,8 @@ const ReportLost = () => {
                                 <Textarea
                                     id="description"
                                     placeholder="Describe your item in detail (color, size, brand, distinctive features, etc.)"
+                                    value={data.description}
+                                    onChange={(e) => setData('description', e.target.value)}
                                     className="min-h-[100px] rounded-xl border-border"
                                     required
                                 />
@@ -95,6 +119,8 @@ const ReportLost = () => {
                                 <Input
                                     id="location"
                                     placeholder="e.g., Library, ICT block, Cafeteria, etc."
+                                    value={data.last_seen_location}
+                                    onChange={(e) => setData('last_seen_location', e.target.value)}
                                     className="rounded-xl border-border"
                                     required
                                 />
@@ -105,7 +131,14 @@ const ReportLost = () => {
                                 <Label htmlFor="dateLost" className="font-medium text-foreground">
                                     Date Lost
                                 </Label>
-                                <Input id="dateLost" type="date" className="rounded-xl border-border" required />
+                                <Input
+                                    id="dateLost"
+                                    type="date"
+                                    className="rounded-xl border-border"
+                                    value={data.date_lost}
+                                    onChange={(e) => setData('date_lost', e.target.value)}
+                                    required
+                                />
                             </div>
 
                             {/* Contact Info */}
@@ -113,7 +146,13 @@ const ReportLost = () => {
                                 <Label htmlFor="contactInfo" className="font-medium text-foreground">
                                     Contact Information
                                 </Label>
-                                <Input id="contactInfo" placeholder="Your email or phone number" className="rounded-xl border-border" />
+                                <Input
+                                    id="contactInfo"
+                                    placeholder="Your email or phone number"
+                                    value={data.contact_info}
+                                    onChange={(e) => setData('contact_info', e.target.value)}
+                                    className="rounded-xl border-border"
+                                />
                             </div>
 
                             {/* Photo Upload */}
@@ -153,18 +192,18 @@ const ReportLost = () => {
                                     )}
                                 </div>
                             </div>
-                        </form>
-                    </CardContent>
-                    <CardFooter>
-                        {/* Submit Button */}
-                        <Button type="submit" size="lg" className="w-full">
-                            Submit Lost Item Report
-                        </Button>
-                    </CardFooter>
+                        </CardContent>
+                        <CardFooter>
+                            {/* Submit Button */}
+                            <Button type="submit" size="lg" className="w-full" disabled={processing}>
+                                {processing ? 'Submitting...' : 'Submit Lost Item Report'}
+                            </Button>
+                        </CardFooter>
+                    </form>
                 </Card>
             </div>
         </Layout>
     );
 };
 
-export default ReportLost;
+export default Create;
