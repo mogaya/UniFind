@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\FoundItem;
+use DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,6 +21,18 @@ class FoundItemController extends Controller
     public function index()
     {
         //
+        $foundItems = DB::table('found_items')->join('categories', 'found_items.category_id', '=', 'categories.id')->select('found_items.id',
+            'found_items.item_name',
+            'found_items.description',
+            'found_items.where_found',
+            'found_items.date_found',
+            'found_items.photo_url',
+            'categories.category_name as category_name'
+        )->get();
+
+        $categories = Category::all(['id', 'category_name']);
+        return Inertia::render('found-items/index', ['foundItems' => $foundItems, 'categories' => $categories,
+        ]);
     }
 
     /**
