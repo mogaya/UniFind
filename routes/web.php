@@ -14,10 +14,6 @@ Route::get('/', function () {
     return Inertia::render('welcome/welcome');
 })->name('home');
 
-Route::get('/found-items', function () {
-    return Inertia::render('found-items');
-})->name('found-items');
-
 Route::get('/my-reports', function () {
     return Inertia::render('my-reports/my-reports');
 })->name('my-reports');
