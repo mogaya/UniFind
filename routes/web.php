@@ -1,18 +1,16 @@
 <?php
 
 use App\Http\Controllers\FoundItemController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LostItemController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// "/report-found"
-// "/found-items"
 // "/my-reports"
 
 // Public Routes
-Route::get('/', function () {
-    return Inertia::render('welcome/welcome');
-})->name('home');
+// Home
+Route::resource('/', HomeController::class);
 
 Route::get('/my-reports', function () {
     return Inertia::render('my-reports/my-reports');
