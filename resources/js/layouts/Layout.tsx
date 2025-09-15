@@ -12,7 +12,7 @@ export default function Layout({ children }: PropsWithChildren) {
     const navLinks = [
         { href: '/', label: 'Home' },
         { href: '/lost-items/create', label: 'Report Lost' },
-        { href: '/report-found', label: 'Report Found' },
+        { href: '/found-items/create', label: 'Report Found' },
         { href: '/found-items', label: 'Found Items' },
         { href: '/my-reports', label: 'My Reports' },
     ];
@@ -43,11 +43,10 @@ export default function Layout({ children }: PropsWithChildren) {
                                                 <NavigationMenuLink asChild>
                                                     <Link
                                                         href={link.href}
-                                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${
-                                                            window.location.pathname === link.href
+                                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${window.location.pathname === link.href
                                                                 ? 'bg-primary text-primary-foreground'
                                                                 : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {link.label}
                                                     </Link>
@@ -88,11 +87,10 @@ export default function Layout({ children }: PropsWithChildren) {
                                 {navLinks.map((link) => (
                                     <Link
                                         href={link.href}
-                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${
-                                            window.location.pathname === link.href
+                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${window.location.pathname === link.href
                                                 ? 'font-bold text-primary'
                                                 : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                                        }`}
+                                            }`}
                                     >
                                         {link.label}
                                     </Link>
