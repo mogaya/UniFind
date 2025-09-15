@@ -9,8 +9,9 @@ import { useForm, usePage } from '@inertiajs/react';
 import { Camera, Upload } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 
-
-
+type PageProps = {
+    categories: { id: number; category_name: string }[];
+};
 
 const Create = () => {
     const { data, setData, post, processing, errors } = useForm({
@@ -44,10 +45,6 @@ const Create = () => {
             setImagePreview(e.target?.result as string);
         };
         reader.readAsDataURL(file);
-    };
-
-    type PageProps = {
-        categories: { id: number; category_name: string }[];
     };
 
     const { categories } = usePage<PageProps>().props;
