@@ -14,6 +14,8 @@ type PageProps = {
 };
 
 const create = () => {
+    const { categories } = usePage<PageProps>().props;
+
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -40,8 +42,6 @@ const create = () => {
         };
         reader.readAsDataURL(file);
     };
-
-    const { categories } = usePage<PageProps>().props;
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
