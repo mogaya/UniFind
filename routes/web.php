@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\LostItemController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -12,14 +13,6 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('welcome/welcome');
 })->name('home');
-
-Route::get('/report-lost', function () {
-    return Inertia::render('report-lost');
-})->name('report-lost');
-
-Route::get('/report-found', function () {
-    return Inertia::render('report-found');
-})->name('report-found');
 
 Route::get('/found-items', function () {
     return Inertia::render('found-items');
@@ -35,6 +28,9 @@ Route::get('/item-details', function () {
 
 // lost items
 Route::resource('lost-items', LostItemController::class);
+
+// found items
+Route::resource('found-items', FoundItemController::class);
 
 // Protected Routes
 Route::middleware(['auth', 'verified'])->group(function () {
