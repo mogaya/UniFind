@@ -8,6 +8,7 @@ import Layout from '@/layouts/Layout';
 import { useForm, usePage } from '@inertiajs/react';
 import { Camera, Upload } from 'lucide-react';
 import { FormEvent, useState } from 'react';
+import { toast } from 'sonner';
 
 type PageProps = {
     categories: { id: number; category_name: string }[];
@@ -26,7 +27,13 @@ const Create = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        post('/lost-items');
+        post('/lost-items', {
+            onSuccess: () => {
+                toast(<span style={{ color: 'green', fontWeight: 600, fontSize: '16px' }}>Lost item reported successfully</span>, {
+                    description: "We've added the item to Lost Items. You will be notified when a match is found.",
+                });
+            },
+        });
         // console.log(data)
     };
 

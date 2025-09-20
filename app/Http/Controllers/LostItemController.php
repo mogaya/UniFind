@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\LostItem;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -23,8 +24,19 @@ class LostItemController extends Controller
     public function index()
     {
         //
-        $lostItems = LostItem::all();
-        return response()->json($lostItems);
+        $foundItems = DB::table('lost_items')->join('categories', 'lost_items.category_id', '=', 'categories.id')->select('lost_items.id',
+            'lost_items.item_name',
+            'lost_items.description',
+            'lost_items.last_seen_location',
+            'lost_items.date_lost',
+            'lost_items.photo_url',
+            'categories.category_name as category_name'
+        )->get();
+
+        $categories = Category::all(['id', 'category_name']);
+        return Inertia::render('lost-items/index', ['foundItems' => $foundItems, 'categories' => $categories,
+        ]);
+
     }
 
     /**
@@ -72,17 +84,42 @@ class LostItemController extends Controller
             'photo_url'          => $imageUrl,
         ]);
 
-        return redirect()->route('home')->with('success', 'Lost item reported successfully.');
+        return redirect()->route('home.index')->with('success', 'Lost item reported successfully.');
 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(LostItem $lostItem)
+    public function show($id)
     {
         //
-        return response()->json($lostItem);
+        $lostItem
+        = DB::table('lost_items')
+            ->join('categories', 'lost_items.category_id', '=', 'categories.id')->join('users', 'lost_items.user_id', '=', 'users.id')->select(
+            'lost_items.id',
+            'lost_items.item_name',
+            'lost_items.description',
+            'lost_items.last_seen_location',
+            'lost_items.date_lost',
+            'lost_items.photo_url',
+            'lost_items.contact_info',
+            'lost_items.status',
+            'categories.category_name as category_name',
+            'users.name as user_name',
+            'users.email as user_email',
+            'lost_items.created_at',
+            'lost_items.updated_at'
+        )
+            ->where('lost_items.id', $id)
+            ->first();
+
+        if (! $lostItem) {
+            abort(404, 'Item not found');
+        }
+
+        return Inertia::render('lost-items/show', ['item' => $lostItem]);
+
     }
 
     /**

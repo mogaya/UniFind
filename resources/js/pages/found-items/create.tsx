@@ -8,6 +8,7 @@ import Layout from '@/layouts/Layout';
 import { useForm, usePage } from '@inertiajs/react';
 import { Camera, Upload } from 'lucide-react';
 import { FormEvent, useState } from 'react';
+import { toast } from 'sonner';
 
 type PageProps = {
     categories: { id: number; category_name: string }[];
@@ -45,7 +46,14 @@ const create = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        post('/found-items');
+        post('/found-items', {
+            onSuccess: () => {
+                toast('Found item reported successfully', {
+                    description: "We've added the item to Found Items. The owner will contact you.",
+                    style: { color: 'green' },
+                });
+            },
+        });
         // console.log(data);
     };
 

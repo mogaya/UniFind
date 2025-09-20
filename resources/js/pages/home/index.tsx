@@ -42,7 +42,7 @@ export default function Index() {
     ];
 
     const handleViewDetails = (id: string) => {
-        router.get(`/item/${id}`);
+        router.get(`/found-items/${id}`);
     };
 
     return (

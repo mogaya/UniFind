@@ -47,7 +47,7 @@ const FoundItems = () => {
     });
 
     const handleViewDetails = (id: string) => {
-        router.get(`/item/${id}`);
+        router.get(`/found-items/${id}`);
     };
 
     const clearFilters = () => {

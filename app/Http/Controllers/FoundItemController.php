@@ -80,7 +80,7 @@ class FoundItemController extends Controller
             'photo_url'                               => $imageUrl,
         ]);
 
-        return redirect()->route('home')->with('success', 'Lost item reported successfully.');
+        return redirect()->route('home.index')->with('success', 'Lost item reported successfully.');
 
     }
 
@@ -90,6 +90,30 @@ class FoundItemController extends Controller
     public function show(string $id)
     {
         //
+        $foundItem = DB::table('found_items')
+            ->join('categories', 'found_items.category_id', '=', 'categories.id')->join('users', 'found_items.user_id', '=', 'users.id')->select(
+            'found_items.id',
+            'found_items.item_name',
+            'found_items.description',
+            'found_items.where_found',
+            'found_items.date_found',
+            'found_items.photo_url',
+            'found_items.contact_info',
+            'found_items.status',
+            'categories.category_name as category_name',
+            'users.name as user_name',
+            'users.email as user_email',
+            'found_items.created_at',
+            'found_items.updated_at'
+        )
+            ->where('found_items.id', $id)
+            ->first();
+
+        if (! $foundItem) {
+            abort(404, 'Item not found');
+        }
+
+        return Inertia::render('found-items/show', ['item' => $foundItem]);
     }
 
     /**
