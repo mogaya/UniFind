@@ -24,9 +24,9 @@ type ItemProps = {
 const Show = () => {
     const { item } = usePage<{ item: ItemProps }>().props;
 
-    const handleClaimItem = () => {
-        toast('Claim Request Submitted', {
-            description: "We've notified the finder. They will contact you to verify ownership.",
+    const handleFoundItem = () => {
+        toast('Thank you', {
+            description: "We've notified the Owner. That you may have found their Item. They will contact you soon",
             action: {
                 label: 'Undo',
                 onClick: () => console.log('Undo'),
@@ -34,7 +34,7 @@ const Show = () => {
         });
     };
 
-    const handleContactFinder = () => {
+    const handleContactOwner = () => {
         const contact = item.contact_info || item.user_email;
         toast('Contact Information', {
             description: `You can reach ${item.user_name} at: ${contact}`,
@@ -99,12 +99,12 @@ const Show = () => {
 
                             {/* Quick Actions */}
                             <div className="grid grid-cols-2 gap-4">
-                                <Button variant="default" size="lg" onClick={handleClaimItem} className="w-full">
-                                    Claim This Item
+                                <Button variant="default" size="lg" onClick={handleFoundItem} className="w-full">
+                                    I Found This
                                 </Button>
-                                <Button variant="outline" size="lg" onClick={handleContactFinder} className="w-full">
+                                <Button variant="outline" size="lg" onClick={handleContactOwner} className="w-full">
                                     <MessageCircle className="mr-2 h-4 w-4" />
-                                    Contact Finder
+                                    Contact Owner
                                 </Button>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ const Show = () => {
                             {/* Location & Time */}
                             <Card>
                                 <CardHeader>
-                                    <CardTitle className="text-foreground">Found Details</CardTitle>
+                                    <CardTitle className="text-foreground">Last Seen</CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-3">
                                     <div className="flex items-center text-muted-foreground">
@@ -150,15 +150,15 @@ const Show = () => {
                                 </Card>
                             )} */}
 
-                            {/* Finder Info */}
+                            {/* Owner Info */}
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Found By</CardTitle>
+                                    <CardTitle>Lost By</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-center justify-between">
                                         <span className="font-medium text-foreground">{item.user_name}</span>
-                                        <Button variant="outline" size="sm" onClick={handleContactFinder}>
+                                        <Button variant="outline" size="sm" onClick={handleContactOwner}>
                                             <Phone className="mr-2 h-4 w-4" />
                                             Contact
                                         </Button>
@@ -167,19 +167,19 @@ const Show = () => {
                             </Card>
 
                             {/* Warning */}
-                            <Card className="border-destructive/20 bg-destructive/5">
+                            <Card className="border-teal/20 bg-teal/5">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-3">
-                                        <AlertTriangle className="h-5 w-5 text-destructive" />
-                                        <h4 className="font-medium text-destructive">Verification Required</h4>
+                                        <AlertTriangle className="h-5 w-5 text-teal" />
+                                        <h4 className="font-medium text-teal">Found This Item?</h4>
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-start space-x-3">
                                         <div>
                                             <p className="text-sm text-muted-foreground">
-                                                To claim this item, you'll need to provide proof of ownership to the finder. This may include
-                                                describing unique features, providing purchase receipts, or other verification methods.
+                                                If you've found this item, please contact the owner or click "I Found This!" to help reunite them with
+                                                their belongings.
                                             </p>
                                         </div>
                                     </div>
