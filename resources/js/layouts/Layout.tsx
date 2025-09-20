@@ -1,5 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu';
+import { UserInfo } from '@/components/user-info';
+import { UserMenuContent } from '@/components/user-menu-content';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Menu, X } from 'lucide-react';
@@ -43,10 +46,11 @@ export default function Layout({ children }: PropsWithChildren) {
                                                 <NavigationMenuLink asChild>
                                                     <Link
                                                         href={link.href}
-                                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${window.location.pathname === link.href
+                                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                                                            window.location.pathname === link.href
                                                                 ? 'bg-primary text-primary-foreground'
                                                                 : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                                                            }`}
+                                                        }`}
                                                     >
                                                         {link.label}
                                                     </Link>
@@ -56,12 +60,28 @@ export default function Layout({ children }: PropsWithChildren) {
                                     </div>
                                     <div>
                                         {auth.user ? (
-                                            <Link
-                                                href={route('dashboard')}
-                                                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                                            >
-                                                Dashboard
-                                            </Link>
+                                            auth.user.is_admin ? (
+                                                <Link
+                                                    href={route('dashboard')}
+                                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                                >
+                                                    Admin Dashboard
+                                                </Link>
+                                            ) : (
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant={'ghost'}>
+                                                            <UserInfo user={auth.user} />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent
+                                                        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                                                        align="end"
+                                                    >
+                                                        <UserMenuContent user={auth.user} />
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            )
                                         ) : (
                                             <>
                                                 <Link
@@ -87,10 +107,11 @@ export default function Layout({ children }: PropsWithChildren) {
                                 {navLinks.map((link) => (
                                     <Link
                                         href={link.href}
-                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${window.location.pathname === link.href
+                                        className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                                            window.location.pathname === link.href
                                                 ? 'font-bold text-primary'
                                                 : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                                            }`}
+                                        }`}
                                     >
                                         {link.label}
                                     </Link>
