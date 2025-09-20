@@ -1,12 +1,13 @@
 import ItemCard from '@/components/ItemCard';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import CustomSection from '@/layouts/custom-section';
 import Layout from '@/layouts/Layout';
 import { type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
+import { PackageSearch, SearchCheck, UserRoundCheck } from 'lucide-react';
 import { useState } from 'react';
 import HeroSection from '../home/components/hero-section';
-import StatsSection from '../home/components/stats-section';
 
 type PageProps = {
     recentFoundItems: {
@@ -18,10 +19,13 @@ type PageProps = {
         date_found: string;
         photo_url: string;
     }[];
+    lostItemsCount: number;
+    foundItemsCount: number;
+    usersCount: number;
 };
 
 export default function Index() {
-    const { recentFoundItems } = usePage<PageProps>().props;
+    const { recentFoundItems, lostItemsCount, foundItemsCount, usersCount } = usePage<PageProps>().props;
     const { auth } = usePage<SharedData>().props;
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -31,6 +35,12 @@ export default function Index() {
         }
     };
 
+    const stats = [
+        { label: 'Lost Items', value: `${lostItemsCount}`, icon: PackageSearch, color: 'text-cta' },
+        { label: 'Found Items', value: `${foundItemsCount}`, icon: SearchCheck, color: 'text-primary' },
+        { label: 'Active Users', value: `${usersCount}`, icon: UserRoundCheck, color: 'text-accent-highlight' },
+    ];
+
     const handleViewDetails = (id: string) => {
         router.get(`/item/${id}`);
     };
@@ -38,7 +48,25 @@ export default function Index() {
     return (
         <Layout>
             <HeroSection />
-            <StatsSection />
+            {/* Statistics Section */}
+            <CustomSection>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                    {stats.map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                            <Card key={stat.label} className="border-border bg-card p-6 text-center">
+                                <CardContent className="p-0">
+                                    <div className="mb-3 flex justify-center">
+                                        <Icon className={`h-8 w-8 ${stat.color}`} />
+                                    </div>
+                                    <div className="mb-2 text-3xl font-bold text-foreground">{stat.value}</div>
+                                    <div className="text-muted-foreground">{stat.label}</div>
+                                </CardContent>
+                            </Card>
+                        );
+                    })}
+                </div>
+            </CustomSection>
 
             {/* Recent Found Items */}
             <CustomSection>

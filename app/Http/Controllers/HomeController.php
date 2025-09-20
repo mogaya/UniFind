@@ -2,6 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\FoundItem;
+use App\Models\LostItem;
+use App\Models\User;
 use DB;
 use function Termwind\render;
 use Illuminate\Http\Request;
@@ -15,6 +18,9 @@ class HomeController extends Controller
     public function index()
     {
         //
+        $lostItemsCount   = LostItem::count();
+        $foundItemsCount  = FoundItem::count();
+        $usersCount       = User::count();
         $recentFoundItems = DB::table('found_items')->join('categories', 'found_items.category_id', '=', 'categories.id')->select(
             'found_items.id',
             'found_items.item_name',
@@ -24,7 +30,11 @@ class HomeController extends Controller
             'found_items.photo_url',
             'categories.category_name as category_name'
         )->latest('found_items.date_found')->limit(6)->get();
-        return Inertia::render("home/index", ['recentFoundItems' => $recentFoundItems]);
+
+        return Inertia::render("home/index", ['recentFoundItems' => $recentFoundItems, 'lostItemsCount' => $lostItemsCount, 'foundItemsCount' => $foundItemsCount, 'usersCount' => $usersCount,
+
+        ]);
+
     }
 
     /**
