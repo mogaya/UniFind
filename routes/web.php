@@ -27,7 +27,7 @@ Route::resource('lost-items', LostItemController::class);
 Route::resource('found-items', FoundItemController::class);
 
 // Protected Routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
