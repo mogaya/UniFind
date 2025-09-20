@@ -15,18 +15,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Edit, Eye, MapPin, Package, Trash2 } from 'lucide-react';
 
 interface Report {
-    id: string;
-    name: string;
-    category: string;
+    id: number;
+    item_name: string;
+    category_name: string;
     description: string;
-    lastSeenLocation?: string;
-    location?: string;
-    dateLost?: string;
-    dateFound?: string;
+    last_seen_location?: string; // for lost
+    where_found?: string; // for found
+    date_lost?: string;
+    date_found?: string;
     status: string;
-    dateReported: string;
-    contactInfo: string;
-    imageUrl: string;
+    created_at: string;
+    contact_info: string;
+    photo_url: string;
 }
 
 interface ReportCardProps {
@@ -53,15 +53,15 @@ const ReportCard: React.FC<ReportCardProps> = ({
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                     <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold text-foreground">{report.name}</CardTitle>
+                        <CardTitle className="text-lg font-semibold text-foreground">{report.item_name}</CardTitle>
                         <div className="mt-2 flex items-center gap-2">
                             {getStatusBadge(report.status)}
                             <Badge variant="outline" className="text-xs">
-                                {report.category}
+                                {report.category_name}
                             </Badge>
                         </div>
                     </div>
-                    <img src={report.imageUrl} alt={report.name} className="h-16 w-16 rounded-lg border border-border object-cover" />
+                    <img src={report.photo_url} alt={report.item_name} className="h-16 w-16 rounded-lg border border-border object-cover" />
                 </div>
             </CardHeader>
 
@@ -71,24 +71,24 @@ const ReportCard: React.FC<ReportCardProps> = ({
                 <div className="space-y-2 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
-                        <span>{type === 'lost' ? report.lastSeenLocation : report.location}</span>
+                        <span>{type === 'lost' ? report.last_seen_location : report.where_found}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
-                        <span>{type === 'lost' ? `Lost on ${report.dateLost}` : `Found on ${report.dateFound}`}</span>
+                        <span>{type === 'lost' ? `Lost on ${report.date_lost}` : `Found on ${report.date_found}`}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Package className="h-4 w-4" />
-                        <span>Reported on {report.dateReported}</span>
+                        <span>Reported on {report.created_at}</span>
                     </div>
                 </div>
 
                 <div className="flex gap-2 border-t border-border pt-3">
-                    <Button variant="outline" size="sm" onClick={() => handleViewDetails(report.id, type)} className="flex-1">
+                    <Button variant="outline" size="sm" onClick={() => handleViewDetails(String(report.id), type)} className="flex-1">
                         <Eye className="mr-1 h-4 w-4" />
                         View
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(report.id, type)} className="flex-1">
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(String(report.id), type)} className="flex-1">
                         <Edit className="mr-1 h-4 w-4" />
                         Edit
                     </Button>
@@ -96,7 +96,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleMarkAsResolved(report.id, type)}
+                            onClick={() => handleMarkAsResolved(String(report.id), type)}
                             className="text-cta hover:text-cta flex-1"
                         >
                             Mark Resolved
@@ -117,7 +117,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(report.id, type)} className="bg-danger hover:bg-danger/90">
+                                <AlertDialogAction onClick={() => handleDelete(String(report.id), type)} className="bg-danger hover:bg-danger/90">
                                     Delete
                                 </AlertDialogAction>
                             </AlertDialogFooter>

@@ -3,28 +3,22 @@
 use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LostItemController;
+use App\Http\Controllers\MyReportsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-// "/my-reports"
 
 // Public Routes
 // Home
 Route::resource('/', HomeController::class)->names('home');
-
-Route::get('/my-reports', function () {
-    return Inertia::render('my-reports/my-reports');
-})->name('my-reports');
-
-Route::get('/item-details', function () {
-    return Inertia::render('item-details');
-})->name('item-details');
 
 // lost items
 Route::resource('lost-items', LostItemController::class);
 
 // found items
 Route::resource('found-items', FoundItemController::class);
+
+// "/my-reports"
+Route::resource('my-reports', MyReportsController::class);
 
 // Protected Routes
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
