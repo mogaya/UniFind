@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 // Public Routes
 // Home
-Route::resource('/', HomeController::class);
+Route::resource('/', HomeController::class)->names('home');
 
 Route::get('/my-reports', function () {
     return Inertia::render('my-reports/my-reports');
