@@ -10,8 +10,8 @@ class FoundItem extends Model
 
     protected $fillable = [
         'user_id',
-        'category_id',
         'item_name',
+        'category_id',
         'description',
         'where_found',
         'date_found',

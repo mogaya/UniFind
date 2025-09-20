@@ -10,8 +10,8 @@ class LostItem extends Model
 
     protected $fillable = [
         'user_id',
-        'category_id',
         'item_name',
+        'category_id',
         'description',
         'last_seen_location',
         'date_lost',
