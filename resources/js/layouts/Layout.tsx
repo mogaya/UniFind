@@ -35,7 +35,9 @@ export default function Layout({ children }: PropsWithChildren) {
                 <header className="border-b p-4">
                     <div className="container mx-auto flex items-center justify-between p-4">
                         {/* Logo */}
-                        <h1 className="text-2xl font-bold">UniFind</h1>
+                        <h1 className="text-2xl font-bold">
+                            <Link href={route('home.index')}>UniFind</Link>
+                        </h1>
                         {/* Desktop Nav */}
                         <NavigationMenu className="hidden md:flex">
                             <NavigationMenuList>
