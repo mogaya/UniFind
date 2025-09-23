@@ -44,22 +44,6 @@ const Show = () => {
         });
     };
 
-    const handleContactFinder = () => {
-        <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
-                <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
-            </DialogHeader>
-
-            <DialogFooter>
-                <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button type="submit">Save changes</Button>
-            </DialogFooter>
-        </DialogContent>;
-    };
-
     const goBack = () => {
         if (window.history.length > 1) {
             window.history.back();
@@ -114,7 +98,7 @@ const Show = () => {
 
                             {/* Quick Actions */}
                             <div className="grid grid-cols-2 gap-4">
-                                <Button variant="default" size="lg" onClick={handleClaimItem} className="w-full">
+                                <Button variant="default" size="lg" className="w-full">
                                     Claim This Item
                                 </Button>
                                 {/* Contact Finder Dialogue */}
@@ -208,10 +192,42 @@ const Show = () => {
                                 <CardContent>
                                     <div className="flex items-center justify-between">
                                         <span className="font-medium text-foreground">{item.user_name}</span>
-                                        <Button variant="outline" size="sm" onClick={handleContactFinder}>
-                                            <Phone className="mr-2 h-4 w-4" />
-                                            Contact
-                                        </Button>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button variant="outline" size="sm">
+                                                    <Phone className="mr-2 h-4 w-4" />
+                                                    Contact
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="max-w-md">
+                                                <DialogHeader>
+                                                    <DialogTitle>Select Channel to contact {item.user_name}</DialogTitle>
+                                                    <DialogDescription>You will be redirected to {item.user_name}'s accounts</DialogDescription>
+                                                </DialogHeader>
+                                                <DialogFooter className="mt-5">
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => {
+                                                            const phone = item.contact_info;
+                                                            const message = encodeURIComponent(
+                                                                `I am contacting you from Unifind in regards to an Item you found with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
+                                                            );
+                                                            window.open(`https://wa.me/+254${phone}?text=${message}`, '_blank');
+                                                        }}
+                                                    >
+                                                        <MessageCircle className="mr-2 h-4 w-4" />
+                                                        WhatsApp
+                                                    </Button>
+                                                    <Button variant="outline" onClick={() => window.open(`mailto:${item.user_email}`, '_blank')}>
+                                                        <Mails className="mr-2 h-4 w-4" />
+                                                        Email
+                                                    </Button>
+                                                    <DialogClose asChild>
+                                                        <Button variant="outline">Cancel</Button>
+                                                    </DialogClose>
+                                                </DialogFooter>
+                                            </DialogContent>
+                                        </Dialog>
                                     </div>
                                 </CardContent>
                             </Card>

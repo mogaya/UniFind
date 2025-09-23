@@ -1,10 +1,20 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import CustomSection from '@/layouts/custom-section';
 import Layout from '@/layouts/Layout';
 import { router, usePage } from '@inertiajs/react';
-import { AlertTriangle, ArrowLeft, Calendar, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Calendar, Mails, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 
 type ItemProps = {
@@ -34,16 +44,16 @@ const Show = () => {
         });
     };
 
-    const handleContactOwner = () => {
-        const contact = item.contact_info || item.user_email;
-        toast('Contact Information', {
-            description: `You can reach ${item.user_name} at: ${contact}`,
-            action: {
-                label: 'Undo',
-                onClick: () => console.log('Undo'),
-            },
-        });
-    };
+    // const handleContactOwner = () => {
+    //     const contact = item.contact_info || item.user_email;
+    //     toast('Contact Information', {
+    //         description: `You can reach ${item.user_name} at: ${contact}`,
+    //         action: {
+    //             label: 'Undo',
+    //             onClick: () => console.log('Undo'),
+    //         },
+    //     });
+    // };
 
     const goBack = () => {
         if (window.history.length > 1) {
@@ -102,10 +112,44 @@ const Show = () => {
                                 <Button variant="default" size="lg" onClick={handleFoundItem} className="w-full">
                                     I Found This
                                 </Button>
-                                <Button variant="outline" size="lg" onClick={handleContactOwner} className="w-full">
-                                    <MessageCircle className="mr-2 h-4 w-4" />
-                                    Contact Owner
-                                </Button>
+
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline" size="lg" className="w-full">
+                                            <MessageCircle className="mr-2 h-4 w-4" />
+                                            Contact Owner
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="max-w-md">
+                                        <DialogHeader>
+                                            <DialogTitle>Select Channel to contact {item.user_name}</DialogTitle>
+                                            <DialogDescription>You will be redirected to {item.user_name}'s accounts</DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter className="mt-5">
+                                            <Button
+                                                variant="outline"
+                                                onClick={() => {
+                                                    const phone = item.contact_info;
+                                                    const message = encodeURIComponent(
+                                                        `I am contacting you from Unifind in regards to an Item you found with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
+                                                    );
+                                                    window.open(`https://wa.me/+254${phone}?text=${message}`, '_blank');
+                                                }}
+                                            >
+                                                <MessageCircle className="mr-2 h-4 w-4" />
+                                                WhatsApp
+                                            </Button>
+
+                                            <Button variant="outline" onClick={() => window.open(`mailto:${item.user_email}`, '_blank')}>
+                                                <Mails className="mr-2 h-4 w-4" />
+                                                Email
+                                            </Button>
+                                            <DialogClose asChild>
+                                                <Button variant="outline">Cancel</Button>
+                                            </DialogClose>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
                             </div>
                         </div>
 
@@ -158,10 +202,43 @@ const Show = () => {
                                 <CardContent>
                                     <div className="flex items-center justify-between">
                                         <span className="font-medium text-foreground">{item.user_name}</span>
-                                        <Button variant="outline" size="sm" onClick={handleContactOwner}>
-                                            <Phone className="mr-2 h-4 w-4" />
-                                            Contact
-                                        </Button>
+
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button variant="outline" size="sm">
+                                                    <Phone className="mr-2 h-4 w-4" />
+                                                    Contact Owner
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="max-w-md">
+                                                <DialogHeader>
+                                                    <DialogTitle>Select Channel to contact {item.user_name}</DialogTitle>
+                                                    <DialogDescription>You will be redirected to {item.user_name}'s accounts</DialogDescription>
+                                                </DialogHeader>
+                                                <DialogFooter className="mt-5">
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => {
+                                                            const phone = item.contact_info;
+                                                            const message = encodeURIComponent(
+                                                                `I am contacting you from Unifind in regards to an Item you found with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
+                                                            );
+                                                            window.open(`https://wa.me/+254${phone}?text=${message}`, '_blank');
+                                                        }}
+                                                    >
+                                                        <MessageCircle className="mr-2 h-4 w-4" />
+                                                        WhatsApp
+                                                    </Button>
+                                                    <Button variant="outline" onClick={() => window.open(`mailto:${item.user_email}`, '_blank')}>
+                                                        <Mails className="mr-2 h-4 w-4" />
+                                                        Email
+                                                    </Button>
+                                                    <DialogClose asChild>
+                                                        <Button variant="outline">Cancel</Button>
+                                                    </DialogClose>
+                                                </DialogFooter>
+                                            </DialogContent>
+                                        </Dialog>
                                     </div>
                                 </CardContent>
                             </Card>
