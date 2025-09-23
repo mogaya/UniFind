@@ -7,10 +7,13 @@ interface ItemCardProps {
     item_name: string;
     category_name: string;
     description: string;
-    where_found: string;
-    date_found: string;
+    last_seen_location?: string;
+    date_lost?: string;
+    where_found?: string;
+    date_found?: string;
     photo_url?: string;
     onViewDetails: (id: string) => void;
+    type: 'lost' | 'found';
 }
 
 const ItemCard = (Item: ItemCardProps) => {
@@ -38,11 +41,11 @@ const ItemCard = (Item: ItemCardProps) => {
                 <div className="space-y-2">
                     <div className="flex items-center text-sm text-muted-foreground">
                         <MapPin className="mr-2 h-4 w-4" />
-                        <span>{Item.where_found}</span>
+                        <span>{Item.type === 'lost' ? `last seen at: ${Item.last_seen_location}` : `Found at: ${Item.where_found}`}</span>
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground">
                         <Calendar className="mr-2 h-4 w-4" />
-                        <span>Found on {Item.date_found}</span>
+                        <span>{Item.type === 'lost' ? `Lost on ${Item.date_lost}` : `Found on ${Item.date_found}`}</span>
                     </div>
                 </div>
             </CardContent>
