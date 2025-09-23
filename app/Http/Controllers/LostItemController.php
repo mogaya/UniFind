@@ -24,17 +24,18 @@ class LostItemController extends Controller
     public function index()
     {
         //
-        $foundItems = DB::table('lost_items')->join('categories', 'lost_items.category_id', '=', 'categories.id')->select('lost_items.id',
+        $lostItems = DB::table('lost_items')->join('categories', 'lost_items.category_id', '=', 'categories.id')->select(
+            'lost_items.id',
             'lost_items.item_name',
+            'categories.category_name as category_name',
             'lost_items.description',
             'lost_items.last_seen_location',
             'lost_items.date_lost',
             'lost_items.photo_url',
-            'categories.category_name as category_name'
         )->get();
 
         $categories = Category::all(['id', 'category_name']);
-        return Inertia::render('lost-items/index', ['foundItems' => $foundItems, 'categories' => $categories,
+        return Inertia::render('lost-items/index', ['lostItems' => $lostItems, 'categories' => $categories,
         ]);
 
     }
