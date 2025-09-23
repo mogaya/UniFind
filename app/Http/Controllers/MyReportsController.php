@@ -7,6 +7,13 @@ use Inertia\Inertia;
 
 class MyReportsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only([
+            'create', 'store', 'edit', 'update', 'destroy', 'index', 'show',
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
