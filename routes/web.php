@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LostItemController;
@@ -25,6 +26,12 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+});
+
+// Admin Dashboard
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::resource('admin-dashboard', AdminDashboardController::class);
 
 });
 
