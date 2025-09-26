@@ -63,28 +63,19 @@ export default function Layout({ children }: PropsWithChildren) {
                                     </div>
                                     <div>
                                         {auth.user ? (
-                                            auth.user.is_admin ? (
-                                                <Link
-                                                    href={route('dashboard')}
-                                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant={'ghost'}>
+                                                        <UserInfo user={auth.user} />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent
+                                                    className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                                                    align="end"
                                                 >
-                                                    Admin Dashboard
-                                                </Link>
-                                            ) : (
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant={'ghost'}>
-                                                            <UserInfo user={auth.user} />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent
-                                                        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-                                                        align="end"
-                                                    >
-                                                        <UserMenuContent user={auth.user} />
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            )
+                                                    <UserMenuContent user={auth.user} />
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         ) : (
                                             <>
                                                 <Link
