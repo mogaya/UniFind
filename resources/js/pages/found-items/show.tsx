@@ -1,3 +1,14 @@
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,12 +24,15 @@ import {
 } from '@/components/ui/dialog';
 import CustomSection from '@/layouts/custom-section';
 import Layout from '@/layouts/Layout';
+import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { AlertTriangle, ArrowLeft, Calendar, Mails, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Calendar, Edit, Mails, MapPin, MessageCircle, Phone, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { handleDelete } from '../my-reports';
 
 type ItemProps = {
     id: number;
+    user_id: number;
     item_name: string;
     description: string;
     where_found: string;
@@ -33,6 +47,7 @@ type ItemProps = {
 
 const Show = () => {
     const { item } = usePage<{ item: ItemProps }>().props;
+    const { auth } = usePage<SharedData>().props;
 
     const handleClaimItem = () => {
         toast('Claim Request Submitted', {
@@ -61,6 +76,10 @@ const Show = () => {
                 </div>
             </div>
         );
+    }
+
+    function handleMarkAsResolved(arg0: string, type: any): void {
+        throw new Error('Function not implemented.');
     }
 
     return (
@@ -97,50 +116,85 @@ const Show = () => {
                             </Card>
 
                             {/* Quick Actions */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <Button variant="default" size="lg" className="w-full">
-                                    Claim This Item
-                                </Button>
-                                {/* Contact Finder Dialogue */}
+                            {auth.user.id === item.user_id ? (
+                                <div className="flex flex-wrap gap-2">
+                                    <Button variant="default" size="lg" className="flex-1">
+                                        <Edit className="mr-1 h-4 w-4" />
+                                        Edit
+                                    </Button>
 
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline" size="lg" className="w-full">
-                                            <MessageCircle className="mr-2 h-4 w-4" />
-                                            Contact Finder
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="max-w-md">
-                                        <DialogHeader>
-                                            <DialogTitle>Select Channel to contact {item.user_name}</DialogTitle>
-                                            <DialogDescription>You will be redirected to {item.user_name}'s accounts</DialogDescription>
-                                        </DialogHeader>
-                                        <DialogFooter className="mt-5">
-                                            <Button
-                                                variant="outline"
-                                                onClick={() => {
-                                                    const phone = item.contact_info;
-                                                    const message = encodeURIComponent(
-                                                        `I am contacting you from Unifind in regards to an Item you found with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
-                                                    );
-                                                    window.open(`https://wa.me/+254${phone}?text=${message}`, '_blank');
-                                                }}
-                                            >
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="outline" size="lg" className="text-danger hover:text-danger flex-1">
+                                                <Trash2 className="h-4 w-4" />
+                                                Delete
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Delete Report</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    Are you sure you want to delete this report? This action cannot be undone.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction
+                                                    onClick={() => handleDelete(String(item.id))}
+                                                    className="bg-danger hover:bg-danger/90"
+                                                >
+                                                    Delete
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Button variant="default" size="lg" className="w-full">
+                                        Claim This Item
+                                    </Button>
+                                    {/* Contact Finder Dialogue */}
+
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button variant="outline" size="lg" className="w-full">
                                                 <MessageCircle className="mr-2 h-4 w-4" />
-                                                WhatsApp
+                                                Contact Finder
                                             </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="max-w-md">
+                                            <DialogHeader>
+                                                <DialogTitle>Select Channel to contact {item.user_name}</DialogTitle>
+                                                <DialogDescription>You will be redirected to {item.user_name}'s accounts</DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter className="mt-5">
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={() => {
+                                                        const phone = item.contact_info;
+                                                        const message = encodeURIComponent(
+                                                            `I am contacting you from Unifind in regards to an Item you found with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
+                                                        );
+                                                        window.open(`https://wa.me/+254${phone}?text=${message}`, '_blank');
+                                                    }}
+                                                >
+                                                    <MessageCircle className="mr-2 h-4 w-4" />
+                                                    WhatsApp
+                                                </Button>
 
-                                            <Button variant="outline" onClick={() => window.open(`mailto:${item.user_email}`, '_blank')}>
-                                                <Mails className="mr-2 h-4 w-4" />
-                                                Email
-                                            </Button>
-                                            <DialogClose asChild>
-                                                <Button variant="outline">Cancel</Button>
-                                            </DialogClose>
-                                        </DialogFooter>
-                                    </DialogContent>
-                                </Dialog>
-                            </div>
+                                                <Button variant="outline" onClick={() => window.open(`mailto:${item.user_email}`, '_blank')}>
+                                                    <Mails className="mr-2 h-4 w-4" />
+                                                    Email
+                                                </Button>
+                                                <DialogClose asChild>
+                                                    <Button variant="outline">Cancel</Button>
+                                                </DialogClose>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                </div>
+                            )}
                         </div>
 
                         {/* Item Details */}
