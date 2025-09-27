@@ -21,17 +21,24 @@ class FoundItemController extends Controller
     public function index()
     {
         //
-        $foundItems = DB::table('found_items')->join('categories', 'found_items.category_id', '=', 'categories.id')->select('found_items.id',
-            'found_items.item_name',
-            'found_items.description',
-            'found_items.where_found',
-            'found_items.date_found',
-            'found_items.photo_url',
-            'categories.category_name as category_name'
-        )->get();
+        $foundItems = FoundItem::with('category:id,category_name', 'user:id')->get();
+
+        $foundItemsData = $foundItems->map(function ($foundItem) {
+            return [
+                'id'            => $foundItem->id,
+                'user_id'       => $foundItem->user_id,
+                'item_name'     => $foundItem->item_name,
+                'description'   => $foundItem->description,
+                'where_found'   => $foundItem->where_found,
+                'date_found'    => $foundItem->date_found,
+                'photo_url'     => $foundItem->photo_url,
+                'category_name' => $foundItem->category->category_name,
+            ];
+        });
 
         $categories = Category::all(['id', 'category_name']);
-        return Inertia::render('found-items/index', ['foundItems' => $foundItems, 'categories' => $categories,
+        return Inertia::render('found-items/index', ['foundItems' => $foundItemsData
+            , 'categories' => $categories,
         ]);
     }
 
@@ -93,6 +100,7 @@ class FoundItemController extends Controller
         $foundItem = DB::table('found_items')
             ->join('categories', 'found_items.category_id', '=', 'categories.id')->join('users', 'found_items.user_id', '=', 'users.id')->select(
             'found_items.id',
+            'found_items.user_id',
             'found_items.item_name',
             'found_items.description',
             'found_items.where_found',
