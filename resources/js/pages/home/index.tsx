@@ -36,9 +36,9 @@ export default function Index() {
     };
 
     const stats = [
-        { label: 'Lost Items', value: `${lostItemsCount}`, icon: PackageSearch, color: 'text-cta' },
-        { label: 'Found Items', value: `${foundItemsCount}`, icon: SearchCheck, color: 'text-primary' },
-        { label: 'Active Users', value: `${usersCount}`, icon: UserRoundCheck, color: 'text-accent-highlight' },
+        { label: 'Lost Items', value: `${lostItemsCount}`, icon: PackageSearch, color: 'text-red-500' },
+        { label: 'Found Items', value: `${foundItemsCount}`, icon: SearchCheck, color: 'text-cta' },
+        { label: 'Active Users', value: `${usersCount}`, icon: UserRoundCheck, color: 'text-blue-500' },
     ];
 
     const handleViewDetails = (id: string) => {
