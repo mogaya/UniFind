@@ -39,7 +39,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 <>
                     <DropdownMenuGroup>
                         <DropdownMenuItem asChild>
-                            <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
+                            <Link className="block w-full" href={route('admin-dashboard.index')} as="button" prefetch onClick={cleanup}>
                                 <LayoutDashboard className="mr-2" />
                                 Admin Dashboard
                             </Link>
