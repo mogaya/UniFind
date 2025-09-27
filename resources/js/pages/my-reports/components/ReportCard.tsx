@@ -51,8 +51,8 @@ const ReportCard: React.FC<ReportCardProps> = ({
     return (
         <Card className="border-border bg-card transition-shadow duration-200 hover:shadow-lg">
             <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                    <div className="flex-1">
+                <div className="flex flex-wrap items-start justify-between">
+                    <div className="mt-2 flex-1">
                         <CardTitle className="text-lg font-semibold text-foreground">{report.item_name}</CardTitle>
                         <div className="mt-2 flex items-center gap-2">
                             {getStatusBadge(report.status)}
@@ -61,7 +61,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
                             </Badge>
                         </div>
                     </div>
-                    <img src={report.photo_url} alt={report.item_name} className="h-16 w-16 rounded-lg border border-border object-cover" />
+                    <img src={report.photo_url} alt={report.item_name} className="mt-2 h-16 w-16 rounded-lg border border-border object-cover" />
                 </div>
             </CardHeader>
 
@@ -83,7 +83,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
                     </div>
                 </div>
 
-                <div className="flex gap-2 border-t border-border pt-3">
+                <div className="flex flex-wrap gap-2 border-t border-border pt-3">
                     <Button variant="outline" size="sm" onClick={() => handleViewDetails(String(report.id), type)} className="flex-1">
                         <Eye className="mr-1 h-4 w-4" />
                         View
@@ -97,7 +97,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
                             variant="outline"
                             size="sm"
                             onClick={() => handleMarkAsResolved(String(report.id), type)}
-                            className="text-cta hover:text-cta flex-1"
+                            className="flex-1 text-cta hover:text-cta"
                         >
                             Mark Resolved
                         </Button>
