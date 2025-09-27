@@ -99,6 +99,7 @@ class LostItemController extends Controller
         = DB::table('lost_items')
             ->join('categories', 'lost_items.category_id', '=', 'categories.id')->join('users', 'lost_items.user_id', '=', 'users.id')->select(
             'lost_items.id',
+            'lost_items.user_id',
             'lost_items.item_name',
             'lost_items.description',
             'lost_items.last_seen_location',
