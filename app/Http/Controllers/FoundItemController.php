@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\FoundItem;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class FoundItemController extends Controller
@@ -98,22 +99,24 @@ class FoundItemController extends Controller
     {
         //
         $foundItem = DB::table('found_items')
-            ->join('categories', 'found_items.category_id', '=', 'categories.id')->join('users', 'found_items.user_id', '=', 'users.id')->select(
-            'found_items.id',
-            'found_items.user_id',
-            'found_items.item_name',
-            'found_items.description',
-            'found_items.where_found',
-            'found_items.date_found',
-            'found_items.photo_url',
-            'found_items.contact_info',
-            'found_items.status',
-            'categories.category_name as category_name',
-            'users.name as user_name',
-            'users.email as user_email',
-            'found_items.created_at',
-            'found_items.updated_at'
-        )
+            ->join('categories', 'found_items.category_id', '=', 'categories.id')
+            ->join('users', 'found_items.user_id', '=', 'users.id')
+            ->select(
+                'found_items.id',
+                'found_items.user_id',
+                'found_items.item_name',
+                'found_items.description',
+                'found_items.where_found',
+                'found_items.date_found',
+                'found_items.photo_url',
+                'found_items.contact_info',
+                'found_items.status',
+                'categories.category_name as category_name',
+                'users.name as user_name',
+                'users.email as user_email',
+                'found_items.created_at',
+                'found_items.updated_at'
+            )
             ->where('found_items.id', $id)
             ->first();
 
@@ -121,7 +124,25 @@ class FoundItemController extends Controller
             abort(404, 'Item not found');
         }
 
-        return Inertia::render('found-items/show', ['item' => $foundItem]);
+        // check if logged in user has claimed this item
+        $user          = Auth::user();
+        $existingClaim = null;
+
+        if ($user) {
+            $existingClaim = DB::table('claims')
+                ->where('found_item_id', $id)
+                ->where('user_id', $user->id)
+                ->first();
+        }
+
+        return Inertia::render('found-items/show', [
+            'item'  => $foundItem,
+            'claim' => $existingClaim,
+            'auth'  => [
+                'user' => $user,
+            ],
+        ]);
+
     }
 
     /**
