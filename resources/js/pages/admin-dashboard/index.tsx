@@ -5,178 +5,72 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CustomSection from '@/layouts/custom-section';
 import Layout from '@/layouts/Layout';
+import { usePage } from '@inertiajs/react';
 import { BarChart3, CheckCircle, Eye, Package, PackageSearch, PackageX, Search, SquarePen, UserRoundPen, UserRoundX, Users } from 'lucide-react';
 import { useState } from 'react';
 
+type PageProps = {
+    lostItemsCount: number;
+    foundItemsCount: number;
+    users: {
+        id: number;
+        name: string;
+        email: string;
+        role: number;
+        found: number;
+        lost: number;
+        created_at: string;
+    }[];
+    lostItems: {
+        id: number;
+        item_name: string;
+        category: string;
+        last_seen_location: string;
+        user_email: string;
+        user_name: string;
+        date: string;
+        time: string;
+        status: string;
+    }[];
+    foundItems: {
+        id: number;
+        item_name: string;
+        category: string;
+        where_found: string;
+        user_email: string;
+        user_name: string;
+        date: string;
+        time: string;
+        status: string;
+    }[];
+};
+
 const index = () => {
+    const { lostItemsCount, foundItemsCount, users, lostItems, foundItems } = usePage<PageProps>().props;
     const [dashboardData] = useState({
-        // Summary statistics
-        totalLostItems: 45,
-        totalFoundItems: 38,
         activeLostItems: 32,
         claimedItems: 21,
         pendingItems: 17,
-
-        // Users list
-        users: [
-            {
-                id: 'u1',
-                name: 'Sarah Wilson',
-                email: 'sarah.wilson@university.edu',
-                role: 'Student',
-                joinDate: '2023-09-15',
-                reportsSubmitted: 3,
-                itemsClaimed: 1,
-                status: 'active',
-            },
-            {
-                id: 'u2',
-                name: 'Mike Chen',
-                email: 'mike.chen@university.edu',
-                role: 'Faculty',
-                joinDate: '2022-08-20',
-                reportsSubmitted: 8,
-                itemsClaimed: 2,
-                status: 'active',
-            },
-            {
-                id: 'u3',
-                name: 'Alex Johnson',
-                email: 'alex.johnson@university.edu',
-                role: 'Student',
-                joinDate: '2024-01-10',
-                reportsSubmitted: 2,
-                itemsClaimed: 0,
-                status: 'active',
-            },
-            {
-                id: 'u4',
-                name: 'Emma Davis',
-                email: 'emma.davis@university.edu',
-                role: 'Staff',
-                joinDate: '2021-03-05',
-                reportsSubmitted: 12,
-                itemsClaimed: 4,
-                status: 'active',
-            },
-            {
-                id: 'u5',
-                name: 'John Smith',
-                email: 'john.smith@university.edu',
-                role: 'Student',
-                joinDate: '2023-08-25',
-                reportsSubmitted: 1,
-                itemsClaimed: 0,
-                status: 'inactive',
-            },
-        ],
-
-        // Lost items list
-        lostItems: [
-            {
-                id: 'lost-15',
-                name: 'MacBook Pro 16-inch',
-                category: 'Electronics',
-                location: 'Engineering Building',
-                reportedBy: 'sarah.wilson@university.edu',
-                date: '2024-01-25',
-                time: '14:30',
-                status: 'active',
-                description: 'Silver MacBook Pro with university stickers',
-            },
-            {
-                id: 'lost-14',
-                name: 'Blue Jansport Backpack',
-                category: 'Bags',
-                location: 'Library - 3rd Floor',
-                reportedBy: 'alex.johnson@university.edu',
-                date: '2024-01-25',
-                time: '11:45',
-                status: 'active',
-                description: 'Blue backpack with textbooks inside',
-            },
-            {
-                id: 'lost-13',
-                name: 'Black Wallet',
-                category: 'Personal Items',
-                location: 'Recreation Center',
-                reportedBy: 'john.smith@university.edu',
-                date: '2024-01-24',
-                time: '16:20',
-                status: 'active',
-                description: 'Black leather wallet with student ID',
-            },
-            {
-                id: 'lost-12',
-                name: 'House Keys',
-                category: 'Personal Items',
-                location: 'Parking Lot B',
-                reportedBy: 'emma.davis@university.edu',
-                date: '2024-01-23',
-                time: '18:00',
-                status: 'found',
-                description: 'Keys with blue keychain',
-            },
-        ],
-
-        // Found items list
-        foundItems: [
-            {
-                id: 'found-12',
-                name: 'Red Gym Water Bottle',
-                category: 'Personal Items',
-                location: 'Recreation Center',
-                reportedBy: 'mike.chen@university.edu',
-                date: '2024-01-25',
-                time: '13:15',
-                status: 'pending',
-                description: 'Red water bottle with gym logo',
-            },
-            {
-                id: 'found-11',
-                name: 'iPhone 15 Pro Max',
-                category: 'Electronics',
-                location: 'Student Union Food Court',
-                reportedBy: 'emma.davis@university.edu',
-                date: '2024-01-24',
-                time: '19:20',
-                status: 'claimed',
-                description: 'iPhone in black case with cracked screen',
-            },
-            {
-                id: 'found-10',
-                name: 'Chemistry Textbook',
-                category: 'Books',
-                location: 'Science Building - Room 204',
-                reportedBy: 'sarah.wilson@university.edu',
-                date: '2024-01-23',
-                time: '14:45',
-                status: 'pending',
-                description: 'Organic Chemistry textbook, 3rd edition',
-            },
-            {
-                id: 'found-9',
-                name: 'AirPods Pro',
-                category: 'Electronics',
-                location: 'Library - Study Room 5',
-                reportedBy: 'alex.johnson@university.edu',
-                date: '2024-01-22',
-                time: '10:30',
-                status: 'claimed',
-                description: 'White AirPods Pro in charging case',
-            },
-        ],
     });
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case 'active':
-                return <Badge variant={'destructive'}>Active</Badge>;
-            case 'found':
+            case 'unclaimed':
+                return <Badge variant={'destructive'}>Unclaimed</Badge>;
             case 'claimed':
-                return <Badge variant={'default'}>Resolved</Badge>;
+                return (
+                    <Badge variant={'default'} className="bg-cta">
+                        claimed
+                    </Badge>
+                );
             case 'pending':
-                return <Badge variant={'secondary'}>Pending</Badge>;
+                return <Badge variant={'destructive'}>Pending</Badge>;
+            case 'resolved':
+                return (
+                    <Badge variant={'default'} className="bg-cta">
+                        Resolved
+                    </Badge>
+                );
             default:
                 return <Badge variant={'outline'}>Unknown</Badge>;
         }
@@ -205,7 +99,7 @@ const index = () => {
                                 <Search className="h-4 w-4 text-destructive" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold text-foreground">{dashboardData.totalLostItems}</div>
+                                <div className="text-2xl font-bold text-foreground">{lostItemsCount}</div>
                                 <p className="text-xs text-muted-foreground">
                                     <span className="text-destructive">{dashboardData.activeLostItems} active</span>
                                 </p>
@@ -218,7 +112,7 @@ const index = () => {
                                 <Package className="h-4 w-4 text-cta" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold text-foreground">{dashboardData.totalFoundItems}</div>
+                                <div className="text-2xl font-bold text-foreground">{foundItemsCount}</div>
                                 <p className="text-xs text-muted-foreground">
                                     <span className="text-cta">{dashboardData.pendingItems} active</span>
                                 </p>
@@ -242,7 +136,7 @@ const index = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold text-foreground">
-                                    {Math.round((dashboardData.claimedItems / dashboardData.totalLostItems) * 100)}%
+                                    {lostItemsCount > 0 ? Math.round((dashboardData.claimedItems / lostItemsCount) * 100) : 0}%
                                 </div>
                                 <p className="text-xs text-muted-foreground">Items Reunited with owners</p>
                             </CardContent>
@@ -273,19 +167,19 @@ const index = () => {
                                                 <TableHead>Name</TableHead>
                                                 <TableHead>Email</TableHead>
                                                 <TableHead>Join Date</TableHead>
-                                                <TableHead>Reports</TableHead>
-                                                <TableHead>Claims</TableHead>
+                                                <TableHead>Items Found</TableHead>
+                                                <TableHead>Items Lost</TableHead>
                                                 <TableHead>Actions</TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {dashboardData.users.map((user) => (
+                                            {users.map((user) => (
                                                 <TableRow key={user.id}>
                                                     <TableCell className="font-medium">{user.name}</TableCell>
                                                     <TableCell className="text-sm">{user.email}</TableCell>
-                                                    <TableCell className="text-sm">{user.joinDate}</TableCell>
-                                                    <TableCell className="text-sm">{user.reportsSubmitted}</TableCell>
-                                                    <TableCell className="text-sm">{user.itemsClaimed}</TableCell>
+                                                    <TableCell className="text-sm">{user.created_at}</TableCell>
+                                                    <TableCell className="text-sm">{user.found}</TableCell>
+                                                    <TableCell className="text-sm">{user.lost}</TableCell>
                                                     <TableCell>
                                                         <Button variant={'default'} size={'icon'} className="mr-2 size-8">
                                                             <UserRoundPen />
@@ -325,18 +219,18 @@ const index = () => {
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {dashboardData.foundItems.map((item) => (
+                                            {foundItems.map((item) => (
                                                 <TableRow key={item.id}>
-                                                    <TableCell className="font-medium">{item.name}</TableCell>
+                                                    <TableCell className="font-medium">{item.item_name}</TableCell>
                                                     <TableCell>{item.category}</TableCell>
-                                                    <TableCell className="text-sm">{item.location}</TableCell>
-                                                    <TableCell className="text-sm">{item.reportedBy}</TableCell>
+                                                    <TableCell className="text-sm">{item.where_found}</TableCell>
+                                                    <TableCell className="text-sm">{item.user_name}</TableCell>
                                                     <TableCell className="text-sm">
                                                         {item.date} at {item.time}
                                                     </TableCell>
                                                     <TableCell>{getStatusBadge(item.status)}</TableCell>
                                                     <TableCell>
-                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8 bg-cta">
+                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8 bg-blue-500">
                                                             <Eye />
                                                         </Button>
                                                         <Button variant={'default'} size={'icon'} className="mr-2 size-8">
@@ -377,18 +271,18 @@ const index = () => {
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {dashboardData.lostItems.map((item) => (
+                                            {lostItems.map((item) => (
                                                 <TableRow key={item.id}>
-                                                    <TableCell className="font-medium">{item.name}</TableCell>
+                                                    <TableCell className="font-medium">{item.item_name}</TableCell>
                                                     <TableCell>{item.category}</TableCell>
-                                                    <TableCell className="text-sm">{item.location}</TableCell>
-                                                    <TableCell className="text-sm">{item.reportedBy}</TableCell>
+                                                    <TableCell className="text-sm">{item.last_seen_location}</TableCell>
+                                                    <TableCell className="text-sm">{item.user_name}</TableCell>
                                                     <TableCell className="text-sm">
                                                         {item.date} at {item.time}
                                                     </TableCell>
                                                     <TableCell className="text-sm">{getStatusBadge(item.status)}</TableCell>
                                                     <TableCell>
-                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8 bg-cta">
+                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8 bg-blue-500">
                                                             <Eye />
                                                         </Button>
                                                         <Button variant={'default'} size={'icon'} className="mr-2 size-8">
