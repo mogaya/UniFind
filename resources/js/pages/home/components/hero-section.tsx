@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
 import Slider from 'react-slick';
 import hero1 from '../assets/hero1.jpg';
 import hero2 from '../assets/hero2.jpg';
@@ -41,12 +42,12 @@ const HeroSection = () => {
                         Connect with your campus community to recover lost items and help others find what they've misplaced.
                     </p>
                     <div className="flex gap-4">
-                        <Button size="lg" className="hover:bg-navy bg-primary text-white">
-                            Report Lost Item
-                        </Button>
-                        <Button size="lg" className="hover:bg-navy hidden bg-primary text-white md:flex">
-                            Report Found Item
-                        </Button>
+                        <Link href={'/lost-items/create'}>
+                            <Button size="lg">Report Lost Item</Button>
+                        </Link>
+                        <Link href={'/found-items/create'}>
+                            <Button size="lg">Report Found Item</Button>
+                        </Link>
                     </div>
                 </div>
             </div>
