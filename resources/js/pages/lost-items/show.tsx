@@ -51,24 +51,13 @@ const Show = () => {
 
     const handleFoundItem = () => {
         toast('Thank you', {
-            description: "We've notified the Owner. That you may have found their Item. They will contact you soon",
+            description: 'Kindly notify the Owner. That you may have found their Item',
             action: {
                 label: 'Undo',
                 onClick: () => console.log('Undo'),
             },
         });
     };
-
-    // const handleContactOwner = () => {
-    //     const contact = item.contact_info || item.user_email;
-    //     toast('Contact Information', {
-    //         description: `You can reach ${item.user_name} at: ${contact}`,
-    //         action: {
-    //             label: 'Undo',
-    //             onClick: () => console.log('Undo'),
-    //         },
-    //     });
-    // };
 
     const goBack = () => {
         if (window.history.length > 1) {
@@ -234,19 +223,6 @@ const Show = () => {
                                 </CardContent>
                             </Card>
 
-                            {/* Additional Notes */}
-                            {/* {item.additionalNotes && (
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle className="text-foreground">Additional Notes</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-foreground">{item.additionalNotes}</p>
-                                    </CardContent>
-                                </Card>
-                            )} */}
-
-                            {/* Owner Info */}
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Lost By</CardTitle>
