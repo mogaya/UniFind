@@ -27,7 +27,6 @@ import Layout from '@/layouts/Layout';
 import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowLeft, Calendar, Edit, Mails, MapPin, MessageCircle, Phone, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
 import { handleDelete } from '../my-reports';
 
 type ItemProps = {
@@ -46,17 +45,15 @@ type ItemProps = {
 };
 
 const Show = () => {
-    const { item } = usePage<{ item: ItemProps }>().props;
+    const { item, claim } = usePage<{ item: ItemProps; claim: any }>().props;
     const { auth } = usePage<SharedData>().props;
 
-    const handleClaimItem = () => {
-        toast('Claim Request Submitted', {
-            description: "We've notified the finder. They will contact you to verify ownership.",
-            action: {
-                label: 'Undo',
-                onClick: () => console.log('Undo'),
-            },
-        });
+    const handleClaim = (foundItemId: number) => {
+        router.post(route('claims.store'), { found_item_id: foundItemId });
+    };
+
+    const handleUnclaim = (claimId: number) => {
+        router.delete(route('claims.destroy', claimId));
     };
 
     const goBack = () => {
@@ -151,9 +148,17 @@ const Show = () => {
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-2 gap-4">
-                                    <Button variant="default" size="lg" className="w-full">
-                                        Claim This Item
-                                    </Button>
+                                    {auth.user &&
+                                        (claim ? (
+                                            <Button variant="destructive" size="lg" className="w-full" onClick={() => handleUnclaim(claim.id)}>
+                                                Unclaim
+                                            </Button>
+                                        ) : (
+                                            <Button variant="default" size="lg" className="w-full" onClick={() => handleClaim(item.id)}>
+                                                Claim This Item
+                                            </Button>
+                                        ))}
+
                                     {/* Contact Finder Dialogue */}
 
                                     <Dialog>
