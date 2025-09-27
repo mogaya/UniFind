@@ -28,6 +28,16 @@ type PageProps = {
     foundReports: Report[];
 };
 
+export function handleDelete(id: string) {
+    toast('Report Deleted', {
+        description: 'Your report has been successfully removed.',
+        action: {
+            label: 'Close',
+            onClick: () => console.log('Closed'),
+        },
+    });
+}
+
 const Index = () => {
     const { lostReports, foundReports } = usePage<PageProps>().props;
 
@@ -76,22 +86,6 @@ const Index = () => {
         } else {
             router.get(`/report-found?edit=${id}`);
         }
-    };
-
-    const handleDelete = (id: string, type: string) => {
-        // if (type === 'lost') {
-        //     setLostReports((prev) => prev.filter((report) => report.id !== id));
-        // } else {
-        //     setFoundReports((prev) => prev.filter((report) => report.id !== id));
-        // }
-
-        toast('Report Deleted', {
-            description: 'Your report has been successfully removed.',
-            action: {
-                label: 'Close',
-                onClick: () => console.log('Closed'),
-            },
-        });
     };
 
     const handleMarkAsResolved = (id: string, type: string) => {
