@@ -56,6 +56,7 @@ class LostItemController extends Controller
     public function store(Request $request)
     {
         // dd($request);
+        // dd($request->all(), $request->file('photo'));
 
         $validate = $request->validate([
             'item_name'          => 'required|string|max:255',
@@ -127,35 +128,49 @@ class LostItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(LostItem $lostItem)
+    public function edit($id)
     {
         //
-        return view('lost-items.edit', compact('lostItem'));
+        $lostItem = LostItem::findOrFail($id);
+
+        if ($lostItem->user_id !== auth()->id()) {abort(403, 'Unauthorised');}
+
+        $categories = Category::all(['id', 'category_name']);
+
+        return Inertia::render('lost-items/edit', ['categories' => $categories, 'lostItem' => $lostItem]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LostItem $lostItem)
+    public function update(Request $request, $id)
     {
         //
+        // dd($request);
+        // dd($request->all(), $request->file('photo'));
+
+        $lostItem = LostItem::findOrFail($id);
+
+        if ($lostItem->user_id !== auth()->id()) {abort(403, 'Unauthorized');}
+
         $validated = $request->validate([
-            'item_name'           => 'required|string|max:255',
-            'category'            => 'required|string',
-            'description'         => 'nullable|string',
-            'last_seen_location'  => 'nullable|string',
-            'date_lost'           => 'required|date',
-            'contact_information' => 'required|string',
-            'photo'               => 'nullable|image|max:2048',
+            'item_name'          => 'required|string|max:255',
+            'category_id'        => 'required|exists:categories,id',
+            'description'        => 'nullable|string',
+            'last_seen_location' => 'nullable|string|max:255',
+            'date_lost'          => 'required|date',
+            'contact_info'       => 'required|string|max:255',
+            'photo'              => 'nullable|image|max:2048',
         ]);
 
         if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->file('photo')->store('lost_items', 'public');
+            $imagePath              = $request->file('photo')->store('lost_items', 'public');
+            $validated['photo_url'] = asset('storage/' . $imagePath);
         }
 
         $lostItem->update($validated);
 
-        return response()->json($lostItem);
+        return redirect()->route('lost-items.show', $lostItem->id)->with('success', 'Lost item updated successfully');
     }
 
     /**
