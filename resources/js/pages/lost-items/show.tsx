@@ -114,7 +114,14 @@ const Show = () => {
                             {/* Quick Actions */}
                             {auth.user.id === item.user_id ? (
                                 <div className="flex flex-wrap gap-2">
-                                    <Button variant="default" size="lg" className="flex-1">
+                                    <Button
+                                        variant="default"
+                                        size="lg"
+                                        className="flex-1"
+                                        onClick={() => {
+                                            router.get(`/lost-items/${item.id}/edit`);
+                                        }}
+                                    >
                                         <Edit className="mr-1 h-4 w-4" />
                                         Edit
                                     </Button>
