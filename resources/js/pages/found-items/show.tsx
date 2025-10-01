@@ -27,7 +27,7 @@ import Layout from '@/layouts/Layout';
 import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowLeft, Calendar, Edit, Mails, MapPin, MessageCircle, Phone, Trash2 } from 'lucide-react';
-import { handleDelete } from '../my-reports';
+import { handleDelete, handleEdit } from '../my-reports';
 
 type ItemProps = {
     id: number;
@@ -115,7 +115,14 @@ const Show = () => {
                             {/* Quick Actions */}
                             {auth.user.id === item.user_id ? (
                                 <div className="flex flex-wrap gap-2">
-                                    <Button variant="default" size="lg" className="flex-1">
+                                    <Button
+                                        variant="default"
+                                        size="lg"
+                                        className="flex-1"
+                                        onClick={() => {
+                                            handleEdit(String(item.id), 'found');
+                                        }}
+                                    >
                                         <Edit className="mr-1 h-4 w-4" />
                                         Edit
                                     </Button>
