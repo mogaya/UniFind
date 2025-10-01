@@ -38,6 +38,14 @@ export function handleDelete(id: string) {
     });
 }
 
+export function handleEdit(id: string, type: string) {
+    if (type === 'lost') {
+        router.get(`/lost-items/${id}/edit`);
+    } else {
+        router.get(`/found-items/${id}/edit`);
+    }
+}
+
 const Index = () => {
     const { lostReports, foundReports } = usePage<PageProps>().props;
 
@@ -76,15 +84,6 @@ const Index = () => {
             router.get(`/lost-items/${id}`);
         } else {
             router.get(`found-items/${id}`);
-        }
-    };
-
-    const handleEdit = (id: string, type: string) => {
-        // Navigate to edit page
-        if (type === 'lost') {
-            router.get(`/lost-items/${id}/edit`);
-        } else {
-            router.get(`/found-items/${id}/edit`);
         }
     };
 
