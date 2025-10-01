@@ -173,6 +173,28 @@ class LostItemController extends Controller
         return redirect()->route('lost-items.show', $lostItem->id)->with('success', 'Lost item updated successfully');
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $lostItem = LostItem::findOrFail($id);
+
+        if ($lostItem->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        if (! $request->has('status')) {
+            $lostItem->status = $lostItem->status === 'pending' ? 'resolved' : 'pending';
+        } else {
+            $validated = $request->validate([
+                'status' => 'required|in:pending,resolved',
+            ]);
+            $lostItem->status = $validated['status'];
+        }
+
+        $lostItem->save();
+
+        return back()->with('success', 'Item Status Updated Successfully');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
