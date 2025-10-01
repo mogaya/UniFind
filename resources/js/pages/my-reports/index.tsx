@@ -46,6 +46,22 @@ export function handleEdit(id: string, type: string) {
     }
 }
 
+export function handleMarkAsResolved(id: string, type: string) {
+    if (type === 'lost') {
+        router.patch(route('lost-items.updateStatus', id));
+    } else {
+        router.patch(route('lost-items.updateStatus', id));
+    }
+
+    toast('Status Updated', {
+        description: `Status Updated Successfully`,
+        action: {
+            label: 'Close',
+            onClick: () => console.log('Closed'),
+        },
+    });
+}
+
 const Index = () => {
     const { lostReports, foundReports } = usePage<PageProps>().props;
 
@@ -85,22 +101,6 @@ const Index = () => {
         } else {
             router.get(`found-items/${id}`);
         }
-    };
-
-    const handleMarkAsResolved = (id: string, type: string) => {
-        // if (type === 'lost') {
-        //     setLostReports((prev) => prev.map((report) => (report.id === id ? { ...report, status: 'found' } : report)));
-        // } else {
-        //     setFoundReports((prev) => prev.map((report) => (report.id === id ? { ...report, status: 'claimed' } : report)));
-        // }
-
-        toast('Status Updated', {
-            description: 'Report has been marked as resolved.',
-            action: {
-                label: 'Close',
-                onClick: () => console.log('Closed'),
-            },
-        });
     };
 
     return (
