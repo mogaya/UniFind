@@ -28,7 +28,7 @@ import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowLeft, Calendar, Edit, Mails, MapPin, MessageCircle, Phone, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { handleDelete } from '../my-reports';
+import { handleDelete, handleMarkAsResolved } from '../my-reports';
 
 type ItemProps = {
     id: number;
@@ -126,8 +126,15 @@ const Show = () => {
                                         Edit
                                     </Button>
 
-                                    <Button variant="outline" size="lg" className="flex-1 text-cta hover:text-cta">
-                                        Mark Resolved
+                                    <Button
+                                        variant="outline"
+                                        size="lg"
+                                        onClick={() => {
+                                            handleMarkAsResolved(String(item.id), 'lost');
+                                        }}
+                                        className={`flex-1 rounded px-4 py-2 text-white ${item.status === 'pending' ? 'bg-green-600' : 'bg-red-400'}`}
+                                    >
+                                        {item.status === 'pending' ? 'Mark as Resolved' : 'Mark as Pending'}
                                     </Button>
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
