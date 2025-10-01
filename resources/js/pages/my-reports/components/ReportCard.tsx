@@ -99,7 +99,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
                             onClick={() => handleMarkAsResolved(String(report.id), type)}
                             className="flex-1 text-cta hover:text-cta"
                         >
-                            Mark Resolved
+                            {report.status === 'pending' ? 'Mark as Resolved' : 'Mark as Pending'}
                         </Button>
                     )}
                     <AlertDialog>
