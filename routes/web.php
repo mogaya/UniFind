@@ -28,6 +28,11 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     })->name('dashboard');
 });
 
+// Update Status
+Route::patch('/lost-items/{id}/status', [LostItemController::class, 'updateStatus'])
+    ->name('lost-items.updateStatus')
+    ->middleware('auth');
+
 // Admin Dashboard
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::resource('admin-dashboard', AdminDashboardController::class);
