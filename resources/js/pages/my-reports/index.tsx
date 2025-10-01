@@ -82,9 +82,9 @@ const Index = () => {
     const handleEdit = (id: string, type: string) => {
         // Navigate to edit page
         if (type === 'lost') {
-            router.get(`/report-lost?edit=${id}`);
+            router.get(`/lost-items/${id}/edit`);
         } else {
-            router.get(`/report-found?edit=${id}`);
+            router.get(`/found-items/${id}/edit`);
         }
     };
 
