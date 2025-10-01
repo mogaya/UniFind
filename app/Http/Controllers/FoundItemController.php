@@ -148,17 +148,48 @@ class FoundItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         //
+        $foundItem = FoundItem::findOrFail($id);
+
+        if ($foundItem->user_id != auth()->id()) {abort(403, 'Unauthorised');}
+
+        $categories = Category::all(['id', 'category_name']);
+
+        return Inertia::render('found-items/edit', ['categories' => $categories, 'foundItem' => $foundItem]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         //
+        $foundItem = FoundItem::findOrFail($id);
+
+        if ($foundItem->user_id != auth()->id()) {abort(403, 'Unauthorized');}
+
+        $validated = $request->validate([
+            'item_name'    => 'required|string|max:255',
+            'category_id'  => 'required|exists:categories,id',
+            'description'  => 'nullable|string',
+            'where_found'  => 'nullable|string',
+            'date_found'   => 'required|date',
+            'contact_info' => 'required|string',
+            'photo'        => 'nullable|image|max:2048',
+
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $imagePath              = $request->file('photo')->store('lost_items', 'public');
+            $validated['photo_url'] = asset('storage/' . $imagePath);
+        }
+
+        $foundItem->update($validated);
+
+        return redirect()->route('found-items.show', $foundItem->id)->with('success', 'Found Item Updated Successfully');
+
     }
 
     /**
