@@ -48,7 +48,7 @@ const create = () => {
         e.preventDefault();
         post('/found-items', {
             onSuccess: () => {
-                toast('Found item reported successfully', {
+                toast.success('Found item reported successfully', {
                     description: "We've added the item to Found Items. The owner will contact you.",
                     style: { color: 'green' },
                 });

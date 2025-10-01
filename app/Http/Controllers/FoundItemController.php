@@ -195,8 +195,18 @@ class FoundItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+    public function destroy(FoundItem $foundItem
+    ) {
         //
+        $foundItem = FoundItem::findOrFail($foundItem->id);
+
+        if ($foundItem->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $foundItem->delete();
+
+        return back()->with('success', 'Item Deleted Successfully');
+
     }
 }

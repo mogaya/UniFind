@@ -201,7 +201,14 @@ class LostItemController extends Controller
     public function destroy(LostItem $lostItem)
     {
         //
+        $lostItem = LostItem::findOrFail($lostItem->id);
+
+        if ($lostItem->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
         $lostItem->delete();
-        return response()->json(null, 204);
+
+        return back()->with('success', 'Item Deleted Successfully');
     }
 }

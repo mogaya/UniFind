@@ -144,7 +144,7 @@ const Show = () => {
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                                 <AlertDialogAction
-                                                    onClick={() => handleDelete(String(item.id))}
+                                                    onClick={() => handleDelete(item.id, 'found')}
                                                     className="bg-danger hover:bg-danger/90"
                                                 >
                                                     Delete

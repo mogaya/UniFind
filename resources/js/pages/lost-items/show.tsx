@@ -50,7 +50,7 @@ const Show = () => {
     const { auth } = usePage<SharedData>().props;
 
     const handleFoundItem = () => {
-        toast('Thank you', {
+        toast.success('Thank you', {
             description: 'Kindly notify the Owner. That you may have found their Item',
             action: {
                 label: 'Undo',
@@ -152,7 +152,7 @@ const Show = () => {
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                                 <AlertDialogAction
-                                                    onClick={() => handleDelete(String(item.id))}
+                                                    onClick={() => handleDelete(item.id, 'lost')}
                                                     className="bg-danger hover:bg-danger/90"
                                                 >
                                                     Delete

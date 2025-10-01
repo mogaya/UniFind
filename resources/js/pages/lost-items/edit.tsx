@@ -41,7 +41,7 @@ const Edit = ({ categories, lostItem }: PageProps) => {
         post(route('lost-items.update', lostItem.id), {
             forceFormData: true,
             onSuccess: () => {
-                toast(<span style={{ color: 'green', fontWeight: 600, fontSize: '16px' }}>Lost item updated successfully</span>, {
+                toast.success('Lost item updated successfully', {
                     description: "We've saved the changes to your lost item",
                 });
             },

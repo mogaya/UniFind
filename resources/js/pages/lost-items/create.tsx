@@ -29,7 +29,7 @@ const Create = () => {
         e.preventDefault();
         post('/lost-items', {
             onSuccess: () => {
-                toast(<span style={{ color: 'green', fontWeight: 600, fontSize: '16px' }}>Lost item reported successfully</span>, {
+                toast.success('Lost item reported successfully', {
                     description: "We've added the item to Lost Items. You will be notified when a match is found.",
                 });
             },

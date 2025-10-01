@@ -36,7 +36,7 @@ interface ReportCardProps {
     handleViewDetails: (id: string, type: string) => void;
     handleEdit: (id: string, type: string) => void;
     handleMarkAsResolved: (id: string, type: string) => void;
-    handleDelete: (id: string, type: string) => void;
+    handleDelete: (id: number, type: string) => void;
 }
 
 const ReportCard: React.FC<ReportCardProps> = ({
@@ -117,7 +117,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(String(report.id), type)} className="bg-danger hover:bg-danger/90">
+                                <AlertDialogAction onClick={() => handleDelete(report.id, type)} className="bg-red-500 hover:bg-red-600">
                                     Delete
                                 </AlertDialogAction>
                             </AlertDialogFooter>

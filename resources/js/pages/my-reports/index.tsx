@@ -28,14 +28,32 @@ type PageProps = {
     foundReports: Report[];
 };
 
-export function handleDelete(id: string) {
-    toast('Report Deleted', {
-        description: 'Your report has been successfully removed.',
-        action: {
-            label: 'Close',
-            onClick: () => console.log('Closed'),
-        },
-    });
+export function handleDelete(id: number, type: string) {
+    if (type === 'lost') {
+        router.delete(route('lost-items.destroy', id), {
+            onSuccess: () => {
+                toast.error('Report Deleted', {
+                    description: 'Your lost item report has been successfully removed.',
+                    action: {
+                        label: 'Close',
+                        onClick: () => console.log('Closed'),
+                    },
+                });
+            },
+        });
+    } else {
+        router.delete(route('found-items.destroy', id), {
+            onSuccess: () => {
+                toast.error('Report Deleted', {
+                    description: 'Your found item report has been successfully removed.',
+                    action: {
+                        label: 'Close',
+                        onClick: () => console.log('Closed'),
+                    },
+                });
+            },
+        });
+    }
 }
 
 export function handleEdit(id: string, type: string) {
@@ -53,7 +71,7 @@ export function handleMarkAsResolved(id: string, type: string) {
         router.patch(route('lost-items.updateStatus', id));
     }
 
-    toast('Status Updated', {
+    toast.success('Status Updated', {
         description: `Status Updated Successfully`,
         action: {
             label: 'Close',
