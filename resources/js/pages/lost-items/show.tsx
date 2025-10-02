@@ -138,7 +138,7 @@ const Show = () => {
                                     </Button>
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
-                                            <Button variant="outline" size="lg" className="text-danger hover:text-danger">
+                                            <Button variant="outline" size="lg" className="text-red-500 hover:text-red-600">
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </AlertDialogTrigger>
@@ -153,7 +153,7 @@ const Show = () => {
                                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                                 <AlertDialogAction
                                                     onClick={() => handleDelete(item.id, 'lost')}
-                                                    className="bg-danger hover:bg-danger/90"
+                                                    className="bg-red-500 hover:bg-red-600"
                                                 >
                                                     Delete
                                                 </AlertDialogAction>
