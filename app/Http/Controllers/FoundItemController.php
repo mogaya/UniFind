@@ -206,7 +206,7 @@ class FoundItemController extends Controller
 
         $foundItem->delete();
 
-        return back()->with('success', 'Item Deleted Successfully');
+        return redirect()->route('my-reports.index')->with('success', 'Item Deleted Successfully');
 
     }
 }

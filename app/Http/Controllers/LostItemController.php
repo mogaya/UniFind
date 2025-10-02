@@ -193,6 +193,7 @@ class LostItemController extends Controller
         $lostItem->save();
 
         return back()->with('success', 'Item Status Updated Successfully');
+
     }
 
     /**
@@ -209,6 +210,7 @@ class LostItemController extends Controller
 
         $lostItem->delete();
 
-        return back()->with('success', 'Item Deleted Successfully');
+        return redirect()->route('my-reports.index')->with('success', 'Item Deleted Successfully');
+
     }
 }
