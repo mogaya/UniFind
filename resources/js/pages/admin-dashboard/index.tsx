@@ -8,6 +8,7 @@ import Layout from '@/layouts/Layout';
 import { usePage } from '@inertiajs/react';
 import { BarChart3, CheckCircle, Eye, Package, PackageSearch, PackageX, Search, SquarePen, UserRoundPen, UserRoundX, Users } from 'lucide-react';
 import { useState } from 'react';
+import { handleDelete } from '../my-reports';
 
 type PageProps = {
     lostItemsCount: number;
@@ -236,7 +237,14 @@ const index = () => {
                                                         <Button variant={'default'} size={'icon'} className="mr-2 size-8">
                                                             <SquarePen />
                                                         </Button>
-                                                        <Button variant={'destructive'} size={'icon'} className="mr-2 size-8">
+                                                        <Button
+                                                            variant={'destructive'}
+                                                            size={'icon'}
+                                                            onClick={() => {
+                                                                handleDelete(item.id, 'found');
+                                                            }}
+                                                            className="mr-2 size-8"
+                                                        >
                                                             <PackageX />
                                                         </Button>
                                                     </TableCell>
@@ -288,7 +296,14 @@ const index = () => {
                                                         <Button variant={'default'} size={'icon'} className="mr-2 size-8">
                                                             <SquarePen />
                                                         </Button>
-                                                        <Button variant={'destructive'} size={'icon'} className="mr-2 size-8">
+                                                        <Button
+                                                            variant={'destructive'}
+                                                            size={'icon'}
+                                                            className="mr-2 size-8"
+                                                            onClick={() => {
+                                                                handleDelete(item.id, 'lost');
+                                                            }}
+                                                        >
                                                             <PackageX />
                                                         </Button>
                                                     </TableCell>
