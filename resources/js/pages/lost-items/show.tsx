@@ -265,7 +265,7 @@ const Show = () => {
                                                         onClick={() => {
                                                             const phone = item.contact_info;
                                                             const message = encodeURIComponent(
-                                                                `I am contacting you from Unifind in regards to an Item you found with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
+                                                                `I am contacting you from Unifind in regards to an Item you lost with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
                                                             );
                                                             window.open(`https://wa.me/+254${phone}?text=${message}`, '_blank');
                                                         }}
