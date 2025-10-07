@@ -7,12 +7,13 @@ import CustomSection from '@/layouts/custom-section';
 import Layout from '@/layouts/Layout';
 import { usePage } from '@inertiajs/react';
 import { BarChart3, CheckCircle, Eye, Package, PackageSearch, PackageX, Search, SquarePen, UserRoundPen, UserRoundX, Users } from 'lucide-react';
-import { useState } from 'react';
 import { handleDelete } from '../my-reports';
 
 type PageProps = {
     lostItemsCount: number;
     foundItemsCount: number;
+    resolvedCount: number;
+    claimedCount: number;
     users: {
         id: number;
         name: string;
@@ -47,12 +48,12 @@ type PageProps = {
 };
 
 const index = () => {
-    const { lostItemsCount, foundItemsCount, users, lostItems, foundItems } = usePage<PageProps>().props;
-    const [dashboardData] = useState({
-        activeLostItems: 32,
-        claimedItems: 21,
-        pendingItems: 17,
-    });
+    const { lostItemsCount, foundItemsCount, users, lostItems, foundItems, claimedCount, resolvedCount } = usePage<PageProps>().props;
+    // const [dashboardData] = useState({
+    //     activeLostItems: 32,
+    //     claimedItems: 21,
+    //     pendingItems: 17,
+    // });
 
     const getStatusBadge = (status: string) => {
         switch (status) {
@@ -102,7 +103,7 @@ const index = () => {
                             <CardContent>
                                 <div className="text-2xl font-bold text-foreground">{lostItemsCount}</div>
                                 <p className="text-xs text-muted-foreground">
-                                    <span className="text-destructive">{dashboardData.activeLostItems} active</span>
+                                    <span className="text-destructive">{lostItemsCount - resolvedCount} active</span>
                                 </p>
                             </CardContent>
                         </Card>
@@ -115,18 +116,19 @@ const index = () => {
                             <CardContent>
                                 <div className="text-2xl font-bold text-foreground">{foundItemsCount}</div>
                                 <p className="text-xs text-muted-foreground">
-                                    <span className="text-cta">{dashboardData.pendingItems} active</span>
+                                    <span className="text-cta">{foundItemsCount - claimedCount} active</span>
                                 </p>
                             </CardContent>
                         </Card>
                         {/* Successfully Claimed */}
                         <Card className="border-border bg-card">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium text-muted-foreground">Successfully Claimed</CardTitle>
+                                <CardTitle className="text-sm font-medium text-muted-foreground">Successfully Claimed & Resolved</CardTitle>
                                 <CheckCircle className="h-4 w-4 text-cta" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold text-foreground">{dashboardData.claimedItems}</div>
+                                <div className="text-2xl font-bold text-foreground">{resolvedCount + claimedCount}</div>
+                                <p className="text-xs text-muted-foreground">Solved by Unifind</p>
                             </CardContent>
                         </Card>
                         {/* Success Rate */}
@@ -137,7 +139,8 @@ const index = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold text-foreground">
-                                    {lostItemsCount > 0 ? Math.round((dashboardData.claimedItems / lostItemsCount) * 100) : 0}%
+                                    {lostItemsCount > 0 ? Math.round(((claimedCount + resolvedCount) / (lostItemsCount + foundItemsCount)) * 100) : 0}
+                                    %
                                 </div>
                                 <p className="text-xs text-muted-foreground">Items Reunited with owners</p>
                             </CardContent>
