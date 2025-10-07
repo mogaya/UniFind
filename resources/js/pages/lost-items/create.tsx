@@ -163,7 +163,7 @@ const Create = () => {
                             {/* Reward */}
                             <div className="space-y-2">
                                 <Label htmlFor="Reward" className="font-medium text-foreground">
-                                    Reward Amount(Ksh)
+                                    Reward Amount(Ksh) (Optional)
                                 </Label>
                                 <Input
                                     id="Reward"
