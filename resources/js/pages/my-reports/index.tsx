@@ -80,6 +80,14 @@ export function handleMarkAsResolved(id: string, type: string) {
     });
 }
 
+export function handleViewDetails(id: string, type: string) {
+    if (type == 'lost') {
+        router.get(`/lost-items/${id}`);
+    } else {
+        router.get(`found-items/${id}`);
+    }
+}
+
 const Index = () => {
     const { lostReports, foundReports } = usePage<PageProps>().props;
 
@@ -109,15 +117,6 @@ const Index = () => {
                 return <Badge variant="destructive">Pending</Badge>;
             default:
                 return <Badge variant="outline">Unknown</Badge>;
-        }
-    };
-
-    const handleViewDetails = (id: string, type: string) => {
-        // Navigate to item detail page
-        if (type == 'lost') {
-            router.get(`/lost-items/${id}`);
-        } else {
-            router.get(`found-items/${id}`);
         }
     };
 
