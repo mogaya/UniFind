@@ -36,8 +36,11 @@ Route::patch('/lost-items/{id}/status', [LostItemController::class, 'updateStatu
 // Admin Dashboard
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::resource('admin-dashboard', AdminDashboardController::class);
-
 });
+
+// For Admin to delete users
+Route::delete('/admin/users/{id}', [AdminDashboardController::class, 'destroyUser'])
+    ->middleware(['auth'])->name('admin.users.destroy');
 
 // claim
 Route::resource('claims', ClaimController::class)->middleware('auth');

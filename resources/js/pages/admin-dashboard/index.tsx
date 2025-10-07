@@ -1,12 +1,18 @@
+import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CustomSection from '@/layouts/custom-section';
 import Layout from '@/layouts/Layout';
-import { usePage } from '@inertiajs/react';
-import { BarChart3, CheckCircle, Eye, Package, PackageSearch, PackageX, Search, SquarePen, UserRoundPen, UserRoundX, Users } from 'lucide-react';
+import { Form, usePage } from '@inertiajs/react';
+import { BarChart3, CheckCircle, Eye, Package, PackageSearch, PackageX, Search, SquarePen, UserRoundX, Users } from 'lucide-react';
+import { useRef } from 'react';
+import { toast } from 'sonner';
 import { handleDelete } from '../my-reports';
 
 type PageProps = {
@@ -48,12 +54,8 @@ type PageProps = {
 };
 
 const index = () => {
+    const passwordInput = useRef<HTMLInputElement>(null);
     const { lostItemsCount, foundItemsCount, users, lostItems, foundItems, claimedCount, resolvedCount } = usePage<PageProps>().props;
-    // const [dashboardData] = useState({
-    //     activeLostItems: 32,
-    //     claimedItems: 21,
-    //     pendingItems: 17,
-    // });
 
     const getStatusBadge = (status: string) => {
         switch (status) {
@@ -185,12 +187,73 @@ const index = () => {
                                                     <TableCell className="text-sm">{user.found}</TableCell>
                                                     <TableCell className="text-sm">{user.lost}</TableCell>
                                                     <TableCell>
-                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8">
+                                                        {/* <Button variant={'default'} size={'icon'} className="mr-2 size-8">
                                                             <UserRoundPen />
-                                                        </Button>
-                                                        <Button variant={'destructive'} size={'icon'} className="size-8">
-                                                            <UserRoundX />
-                                                        </Button>
+                                                        </Button> */}
+                                                        <Dialog>
+                                                            <DialogTrigger asChild>
+                                                                <Button variant={'destructive'} size={'icon'} className="size-8">
+                                                                    <UserRoundX />
+                                                                </Button>
+                                                            </DialogTrigger>
+                                                            <DialogContent>
+                                                                <DialogTitle>Are you sure you want to delete {user.name}'s account?</DialogTitle>
+                                                                <DialogDescription>
+                                                                    Once {user.name}'s account is deleted, all of its resources and data will also be
+                                                                    permanently deleted. Please enter your admin password to confirm you would like to
+                                                                    permanently delete {user.name}'s account.
+                                                                </DialogDescription>
+
+                                                                <Form
+                                                                    method="delete"
+                                                                    action={route('admin.users.destroy', user.id)}
+                                                                    options={{
+                                                                        preserveScroll: true,
+                                                                    }}
+                                                                    onError={() => passwordInput.current?.focus()}
+                                                                    onSuccess={() => {
+                                                                        toast.success('User Deleted', {
+                                                                            description: `${user.name} has been successfully removed.`,
+                                                                        });
+                                                                    }}
+                                                                    resetOnSuccess
+                                                                    className="space-y-6"
+                                                                >
+                                                                    {({ resetAndClearErrors, processing, errors }) => (
+                                                                        <>
+                                                                            <div className="grid gap-2">
+                                                                                <Label htmlFor="password" className="sr-only">
+                                                                                    Password
+                                                                                </Label>
+
+                                                                                <Input
+                                                                                    id="password"
+                                                                                    type="password"
+                                                                                    name="password"
+                                                                                    ref={passwordInput}
+                                                                                    placeholder="Password"
+                                                                                    autoComplete="current-password"
+                                                                                />
+
+                                                                                <InputError message={errors.password} />
+                                                                            </div>
+
+                                                                            <DialogFooter className="gap-2">
+                                                                                <DialogClose asChild>
+                                                                                    <Button variant="secondary" onClick={() => resetAndClearErrors()}>
+                                                                                        Cancel
+                                                                                    </Button>
+                                                                                </DialogClose>
+
+                                                                                <Button variant="destructive" disabled={processing} asChild>
+                                                                                    <button type="submit">Delete account</button>
+                                                                                </Button>
+                                                                            </DialogFooter>
+                                                                        </>
+                                                                    )}
+                                                                </Form>
+                                                            </DialogContent>
+                                                        </Dialog>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}

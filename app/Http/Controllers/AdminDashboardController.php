@@ -6,6 +6,7 @@ use App\Models\FoundItem;
 use App\Models\LostItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class AdminDashboardController extends Controller
@@ -132,4 +133,36 @@ class AdminDashboardController extends Controller
     {
         //
     }
+
+    public function destroyUser(Request $request, $id)
+    {
+        $admin = $request->user();
+
+        if (! $admin->is_admin) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'password' => ['required', 'string'],
+        ]);
+
+        if (! Hash::check($request->password, $admin->password)) {
+            return back()->withErrors(['password' => 'The provided password is incorrect.']);
+        }
+
+        $user = User::find($id);
+
+        if (! $user) {
+            return back()->withErrors(['message' => 'User not found.']);
+        }
+
+        if ($user->id === $admin->id || $user->is_admin) {
+            return back()->withErrors(['message' => 'You cannot delete an admin account.']);
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'User deleted successfully.');
+    }
+
 }
