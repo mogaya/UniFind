@@ -153,7 +153,9 @@ class FoundItemController extends Controller
         //
         $foundItem = FoundItem::findOrFail($id);
 
-        if ($foundItem->user_id != auth()->id()) {abort(403, 'Unauthorised');}
+        $user = auth()->user();
+
+        if (! $user->is_admin && $foundItem->user_id != auth()->id()) {abort(403, 'Unauthorised');}
 
         $categories = Category::all(['id', 'category_name']);
 
@@ -168,7 +170,9 @@ class FoundItemController extends Controller
         //
         $foundItem = FoundItem::findOrFail($id);
 
-        if ($foundItem->user_id != auth()->id()) {abort(403, 'Unauthorized');}
+        $user = auth()->user();
+
+        if (! $user->is_admin && $foundItem->user_id != auth()->id()) {abort(403, 'Unauthorized');}
 
         $validated = $request->validate([
             'item_name'    => 'required|string|max:255',
@@ -200,7 +204,9 @@ class FoundItemController extends Controller
         //
         $foundItem = FoundItem::findOrFail($foundItem->id);
 
-        if ($foundItem->user_id !== auth()->id()) {
+        $user = auth()->user();
+
+        if (! $user->is_admin && $foundItem->user_id !== auth()->id()) {
             abort(403, 'Unauthorized');
         }
 

@@ -13,7 +13,7 @@ import { Form, usePage } from '@inertiajs/react';
 import { BarChart3, CheckCircle, Eye, Package, PackageSearch, PackageX, Search, SquarePen, UserRoundX, Users } from 'lucide-react';
 import { useRef } from 'react';
 import { toast } from 'sonner';
-import { handleDelete, handleViewDetails } from '../my-reports';
+import { handleDelete, handleEdit, handleViewDetails } from '../my-reports';
 
 type PageProps = {
     lostItemsCount: number;
@@ -307,7 +307,14 @@ const index = () => {
                                                         >
                                                             <Eye />
                                                         </Button>
-                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8">
+                                                        <Button
+                                                            variant={'default'}
+                                                            size={'icon'}
+                                                            className="mr-2 size-8"
+                                                            onClick={() => {
+                                                                handleEdit(String(item.id), 'found');
+                                                            }}
+                                                        >
                                                             <SquarePen />
                                                         </Button>
                                                         <Button
@@ -373,7 +380,14 @@ const index = () => {
                                                         >
                                                             <Eye />
                                                         </Button>
-                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8">
+                                                        <Button
+                                                            variant={'default'}
+                                                            size={'icon'}
+                                                            className="mr-2 size-8"
+                                                            onClick={() => {
+                                                                handleEdit(String(item.id), 'lost');
+                                                            }}
+                                                        >
                                                             <SquarePen />
                                                         </Button>
                                                         <Button

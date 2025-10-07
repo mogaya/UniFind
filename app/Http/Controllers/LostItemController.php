@@ -133,7 +133,9 @@ class LostItemController extends Controller
         //
         $lostItem = LostItem::findOrFail($id);
 
-        if ($lostItem->user_id !== auth()->id()) {abort(403, 'Unauthorised');}
+        $user = auth()->user();
+
+        if (! $user->is_admin && $lostItem->user_id !== auth()->id()) {abort(403, 'Unauthorised');}
 
         $categories = Category::all(['id', 'category_name']);
 
@@ -151,7 +153,9 @@ class LostItemController extends Controller
 
         $lostItem = LostItem::findOrFail($id);
 
-        if ($lostItem->user_id !== auth()->id()) {abort(403, 'Unauthorized');}
+        $user = auth()->user();
+
+        if (! $user->is_admin && $lostItem->user_id !== auth()->id()) {abort(403, 'Unauthorized');}
 
         $validated = $request->validate([
             'item_name'          => 'required|string|max:255',
@@ -201,16 +205,19 @@ class LostItemController extends Controller
      */
     public function destroy(LostItem $lostItem)
     {
-        //
         $lostItem = LostItem::findOrFail($lostItem->id);
 
-        if ($lostItem->user_id !== auth()->id()) {
+        $user = auth()->user();
+
+        if (! $user->is_admin && $lostItem->user_id !== $user->id) {
             abort(403, 'Unauthorized');
         }
 
         $lostItem->delete();
 
-        return redirect()->route('my-reports.index')->with('success', 'Item Deleted Successfully');
-
+        return redirect()
+            ->route('my-reports.index')
+            ->with('success', 'Item Deleted Successfully');
     }
+
 }
