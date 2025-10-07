@@ -41,6 +41,7 @@ type ItemProps = {
     photo_url: string;
     status: string;
     category_name: string;
+    reward: string;
     user_name: string;
     user_email: string;
 };
@@ -90,8 +91,9 @@ const Show = () => {
                         <div>
                             <h1 className="text-3xl font-bold text-foreground">{item.item_name}</h1>
                             <div className="mt-2 flex items-center gap-2">
-                                <Badge variant={'secondary'}>{item.category_name}</Badge>
-                                <Badge variant={item.status === 'Available' ? 'default' : 'secondary'}>{item.status}</Badge>
+                                <Badge variant={'default'}>{item.category_name}</Badge>
+                                <Badge variant={item.status === 'pending' ? 'destructive' : 'secondary'}>{item.status}</Badge>
+                                {item.reward && <Badge className="bg-cta">Reward: Ksh {item.reward}</Badge>}
                             </div>
                         </div>
                     </div>
@@ -185,7 +187,7 @@ const Show = () => {
                                                     onClick={() => {
                                                         const phone = item.contact_info;
                                                         const message = encodeURIComponent(
-                                                            `I am contacting you from Unifind in regards to an Item you found with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
+                                                            `I am contacting you from Unifind in regards to an Item you lost with the following details: \n\nItem Name: ${item.item_name}\nCategory: ${item.category_name}\nDescription: ${item.description}\n\nSee the image here: ${item.photo_url}`,
                                                         );
                                                         window.open(`https://wa.me/+254${phone}?text=${message}`, '_blank');
                                                     }}

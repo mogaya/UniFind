@@ -18,6 +18,7 @@ class LostItem extends Model
         'contact_info',
         'photo_url',
         'status',
+        'reward',
     ];
 
     public function user()

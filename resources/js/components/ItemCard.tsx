@@ -12,6 +12,7 @@ interface ItemCardProps {
     where_found?: string;
     date_found?: string;
     photo_url?: string;
+    reward?: string;
     onViewDetails: (id: string) => void;
     type: 'lost' | 'found';
 }
@@ -29,6 +30,11 @@ const ItemCard = (Item: ItemCardProps) => {
                 )}
                 <div className="absolute top-3 left-3">
                     <span className="rounded-full bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">{Item.category_name}</span>
+                    {Item.reward && (
+                        <span className="ml-2 rounded-full bg-cta px-2 py-1 text-xs font-medium text-primary-foreground">
+                            Reward: Ksh {Item.reward}
+                        </span>
+                    )}
                 </div>
             </div>
 

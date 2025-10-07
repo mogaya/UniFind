@@ -22,6 +22,7 @@ const Create = () => {
         last_seen_location: '',
         date_lost: '',
         contact_info: '',
+        reward: '',
         photo: null as File | null,
     });
 
@@ -155,6 +156,20 @@ const Create = () => {
                                     placeholder="Your email or phone number"
                                     value={data.contact_info}
                                     onChange={(e) => setData('contact_info', e.target.value)}
+                                    className="rounded-xl border-border"
+                                />
+                            </div>
+
+                            {/* Reward */}
+                            <div className="space-y-2">
+                                <Label htmlFor="Reward" className="font-medium text-foreground">
+                                    Reward Amount(Ksh)
+                                </Label>
+                                <Input
+                                    id="Reward"
+                                    placeholder="Reward e.g 50, 100, 200"
+                                    value={data.reward}
+                                    onChange={(e) => setData('reward', e.target.value)}
                                     className="rounded-xl border-border"
                                 />
                             </div>

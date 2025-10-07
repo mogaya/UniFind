@@ -31,6 +31,7 @@ class LostItemController extends Controller
             'lost_items.description',
             'lost_items.last_seen_location',
             'lost_items.date_lost',
+            'lost_items.reward',
             'lost_items.photo_url',
         )->get();
 
@@ -65,6 +66,7 @@ class LostItemController extends Controller
             'last_seen_location' => 'nullable|string',
             'date_lost'          => 'required|date',
             'contact_info'       => 'required|string',
+            'reward'             => 'nullable|integer|min:0',
             'photo'              => 'nullable|image|max:2048',
         ]);
 
@@ -83,6 +85,7 @@ class LostItemController extends Controller
             'last_seen_location' => $request->last_seen_location,
             'date_lost'          => $request->date_lost,
             'contact_info'       => $request->contact_info,
+            'reward'             => $request->reward,
             'photo_url'          => $imageUrl,
         ]);
 
@@ -108,6 +111,7 @@ class LostItemController extends Controller
             'lost_items.photo_url',
             'lost_items.contact_info',
             'lost_items.status',
+            'lost_items.reward',
             'categories.category_name as category_name',
             'users.name as user_name',
             'users.email as user_email',
@@ -164,6 +168,7 @@ class LostItemController extends Controller
             'last_seen_location' => 'nullable|string|max:255',
             'date_lost'          => 'required|date',
             'contact_info'       => 'required|string|max:255',
+            'reward'             => 'nullable|integer|min:0',
             'photo'              => 'nullable|image|max:2048',
         ]);
 
