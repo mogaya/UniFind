@@ -19,6 +19,9 @@ class AdminDashboardController extends Controller
         $lostItemsCount  = LostItem::count();
         $foundItemsCount = FoundItem::count();
 
+        $resolvedCount = LostItem::where('status', 'resolved')->count();
+        $claimedCount  = FoundItem::where('status', 'claimed')->count();
+
         // users data
 
         $users = User::withCount(['foundItems', 'lostItems'])->get();
@@ -77,6 +80,8 @@ class AdminDashboardController extends Controller
             'users'           => $userData,
             'lostItems'       => $lostItemsData,
             'foundItems'      => $foundItemsData,
+            'resolvedCount'   => $resolvedCount,
+            'claimedCount'    => $claimedCount,
         ]);
     }
 
