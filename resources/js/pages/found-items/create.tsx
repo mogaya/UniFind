@@ -133,11 +133,11 @@ const create = () => {
 
                             {/* Date Found */}
                             <div className="space-y-2">
-                                <Label htmlFor="dateLost" className="font-medium text-foreground">
+                                <Label htmlFor="dateFound" className="font-medium text-foreground">
                                     Date Found
                                 </Label>
                                 <Input
-                                    id="dateLost"
+                                    id="dateFound"
                                     type="date"
                                     value={data.date_found}
                                     onChange={(e) => setData('date_found', e.target.value)}
@@ -202,7 +202,7 @@ const create = () => {
                         <CardFooter className="flex flex-col gap-4">
                             {/* Submit Button */}
                             <Button type="submit" size="lg" className="w-full">
-                                Submit Lost Item Report
+                                Submit Found Item Report
                             </Button>
                             <p className="text-center text-xs text-muted-foreground">
                                 By submitting this form, you agree to help facilitate the return of this item to its rightful owner.
