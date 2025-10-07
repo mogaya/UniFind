@@ -13,7 +13,7 @@ import { Form, usePage } from '@inertiajs/react';
 import { BarChart3, CheckCircle, Eye, Package, PackageSearch, PackageX, Search, SquarePen, UserRoundX, Users } from 'lucide-react';
 import { useRef } from 'react';
 import { toast } from 'sonner';
-import { handleDelete } from '../my-reports';
+import { handleDelete, handleViewDetails } from '../my-reports';
 
 type PageProps = {
     lostItemsCount: number;
@@ -297,7 +297,14 @@ const index = () => {
                                                     </TableCell>
                                                     <TableCell>{getStatusBadge(item.status)}</TableCell>
                                                     <TableCell>
-                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8 bg-blue-500">
+                                                        <Button
+                                                            variant={'default'}
+                                                            size={'icon'}
+                                                            className="mr-2 size-8 bg-blue-500"
+                                                            onClick={() => {
+                                                                handleViewDetails(String(item.id), 'found');
+                                                            }}
+                                                        >
                                                             <Eye />
                                                         </Button>
                                                         <Button variant={'default'} size={'icon'} className="mr-2 size-8">
@@ -356,7 +363,14 @@ const index = () => {
                                                     </TableCell>
                                                     <TableCell className="text-sm">{getStatusBadge(item.status)}</TableCell>
                                                     <TableCell>
-                                                        <Button variant={'default'} size={'icon'} className="mr-2 size-8 bg-blue-500">
+                                                        <Button
+                                                            variant={'default'}
+                                                            size={'icon'}
+                                                            className="mr-2 size-8 bg-blue-500"
+                                                            onClick={() => {
+                                                                handleViewDetails(String(item.id), 'lost');
+                                                            }}
+                                                        >
                                                             <Eye />
                                                         </Button>
                                                         <Button variant={'default'} size={'icon'} className="mr-2 size-8">
