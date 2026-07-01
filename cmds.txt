@@ -4,7 +4,7 @@
 - `php artisan migrate`             : Run all database migrations.                                                    
 - `php artisan migrate:fresh --seed`: Reset database and seed with test data.                                         
 - `php artisan db:seed`             : Run database seeders.                                                           
-- `php artisan make:model Post -mcr`: Create a model + migration + controller + resource.
+!  `php artisan make:model <name> -mcr`: Create a model + migration + controller + resource.
 
 - `php artisan make:controller UserController`    - Create a controller.
        
@@ -73,7 +73,7 @@ So typically you’ll keep **two terminals open**:
 !! OTHER
 php artisan make:model Category -m
 
-php artisan make:controller LostItemController --resource
+! php artisan make:controller LostItemController --resource
 
 php artisan make:seeder CategorySeeder
 
